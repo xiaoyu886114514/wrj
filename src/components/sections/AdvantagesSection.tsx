@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SectionHeader, GlassCard, AnimatedEntry } from '@/components/SharedComponents'
+import { SectionHeader, GlassCard, AnimatedEntry, DataBadge } from '@/components/SharedComponents'
 import { Zap, Navigation, Shield, Box, Cpu, Gauge } from 'lucide-react'
 
 const DRONE_PARTS = [
@@ -38,41 +38,79 @@ export function AdvantagesSection() {
         <AnimatedEntry>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
             {/* Drone with hotspots */}
-            <div className="relative aspect-square max-w-[500px] mx-auto w-full">
-              <img
-                src="/images/drone-main.png"
-                alt="VTOL固定翼无人机结构"
-                className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(0,229,255,0.12)] animate-drone-hover"
-              />
-              {/* Hotspot dots */}
-              {DRONE_PARTS.map(part => (
-                <button
-                  key={part.id}
-                  onClick={() => setActivePart(activePart === part.id ? null : part.id)}
-                  className={`absolute w-6 h-6 -translate-x-1/2 -translate-y-1/2 group transition-all duration-300 ${activePart === part.id ? 'z-20 scale-125' : 'z-10'}`}
-                  style={{ left: part.x, top: part.y }}
-                >
-                  <span className={`block w-full h-full rounded-full border-2 transition-all duration-300 ${activePart === part.id ? 'bg-primary border-primary shadow-[var(--shadow-glow-primary)]' : 'bg-primary/30 border-primary/50 group-hover:bg-primary/50'}`} />
-                  <span className="absolute inset-0 rounded-full bg-primary/20 animate-ping" />
-                </button>
-              ))}
-
-              {/* Detail popup */}
-              {activePart && (() => {
-                const part = DRONE_PARTS.find(p => p.id === activePart)
-                if (!part) return null
-                return (
-                  <div className="absolute bottom-4 left-4 right-4 z-30 glass-card p-4 animate-fade-in-up border-primary/30">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                        <part.icon className="w-4 h-4 text-primary" />
-                      </div>
-                      <h4 className="text-sm font-bold text-foreground">{part.label}</h4>
-                    </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{part.desc}</p>
+            <div className="relative mx-auto w-full max-w-[540px]">
+              <div className="tech-frame relative aspect-square p-5 sm:p-6">
+                <div className="absolute inset-5 rounded-[1.6rem] border border-primary/12" />
+                <div className="absolute inset-[12%] rounded-full border border-primary/12" />
+                <div className="absolute inset-[20%] rounded-full border border-dashed border-primary/12 animate-radar-spin" />
+                <div className="absolute left-5 top-5 rounded-2xl border border-primary/16 bg-background/72 px-4 py-3 backdrop-blur-xl">
+                  <div className="hud-label text-[10px] text-primary">Airframe Blueprint</div>
+                  <div className="mt-2 text-xs text-muted-foreground">点击热点查看关键模块能力</div>
+                </div>
+                <div className="absolute right-5 top-5 rounded-2xl border border-primary/16 bg-background/72 px-4 py-3 text-right backdrop-blur-xl">
+                  <div className="hud-label text-[10px] text-muted-foreground">Flight Status</div>
+                  <div className="mt-2 flex items-center justify-end gap-2">
+                    <span className="signal-dot" />
+                    <span className="font-display text-xs tracking-[0.18em] text-primary">ACTIVE</span>
                   </div>
-                )
-              })()}
+                </div>
+
+                <img
+                  src="/images/drone-main.png"
+                  alt="VTOL固定翼无人机结构"
+                  className="relative z-10 h-full w-full object-contain drop-shadow-[0_0_48px_rgba(0,229,255,0.16)] animate-float-tilt"
+                />
+
+                {/* Hotspot dots */}
+                {DRONE_PARTS.map(part => (
+                  <button
+                    key={part.id}
+                    onClick={() => setActivePart(activePart === part.id ? null : part.id)}
+                    className={`absolute -translate-x-1/2 -translate-y-1/2 group transition-all duration-300 ${activePart === part.id ? 'z-20 scale-110' : 'z-10'}`}
+                    style={{ left: part.x, top: part.y }}
+                  >
+                    <span className={`absolute inset-0 rounded-full ${activePart === part.id ? 'bg-primary/25 animate-ping' : 'opacity-0 group-hover:opacity-100'} transition-opacity`} />
+                    <span className={`relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 ${activePart === part.id ? 'bg-primary/16 border-primary text-primary shadow-[var(--shadow-glow-primary)]' : 'bg-background/72 border-primary/35 text-foreground/70 group-hover:border-primary/65 group-hover:text-primary'}`}>
+                      <part.icon className="w-4 h-4" />
+                    </span>
+                    <span className={`mt-2 block rounded-full border px-3 py-1 text-[10px] font-semibold tracking-[0.16em] transition-all duration-300 ${activePart === part.id ? 'border-primary/24 bg-primary/10 text-primary' : 'border-border/60 bg-background/68 text-muted-foreground group-hover:text-foreground'}`}>
+                      {part.label}
+                    </span>
+                  </button>
+                ))}
+
+                {/* Detail popup */}
+                {activePart && (() => {
+                  const part = DRONE_PARTS.find(p => p.id === activePart)
+                  if (!part) return null
+                  return (
+                    <div className="absolute bottom-5 left-5 right-5 z-30 hud-panel p-4 animate-fade-in-up border-primary/30">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-primary/20 bg-primary/12">
+                          <part.icon className="w-4 h-4 text-primary" />
+                        </div>
+                        <div>
+                          <div className="hud-label text-[10px] text-primary/70">System Focus</div>
+                          <h4 className="text-sm font-bold text-foreground">{part.label}</h4>
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{part.desc}</p>
+                    </div>
+                  )
+                })()}
+              </div>
+
+              <div className="mt-5 grid grid-cols-3 gap-3">
+                <div className="rounded-2xl border border-primary/12 bg-background/55 p-3 text-center backdrop-blur-xl">
+                  <DataBadge value="200" label="最大航程" unit="km" />
+                </div>
+                <div className="rounded-2xl border border-primary/12 bg-background/55 p-3 text-center backdrop-blur-xl">
+                  <DataBadge value="15" label="有效载重" unit="kg" />
+                </div>
+                <div className="rounded-2xl border border-primary/12 bg-background/55 p-3 text-center backdrop-blur-xl">
+                  <DataBadge value="0" label="场地需求" unit="m²" />
+                </div>
+              </div>
             </div>
 
             {/* Core advantages cards */}
@@ -83,12 +121,13 @@ export function AdvantagesSection() {
                   className={`cursor-pointer transition-all duration-300 ${expandedCard === i ? 'sm:col-span-2 border-primary/30' : ''} ${adv.highlight ? 'border-primary/20' : ''}`}
                   onClick={() => setExpandedCard(expandedCard === i ? null : i)}
                 >
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="hud-label text-[10px] text-primary/70">Advantage {String(i + 1).padStart(2, '0')}</span>
+                    {adv.highlight && <span className="rounded-full border border-accent/25 bg-accent/10 px-2 py-1 text-[10px] font-semibold text-accent">Flagship</span>}
+                  </div>
                   <div className="flex items-start gap-3">
-                    {adv.highlight && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" />
-                    )}
                     <div>
-                      <h4 className="text-sm font-bold text-foreground mb-1">{adv.title}</h4>
+                      <h4 className="text-sm font-bold text-foreground mb-2">{adv.title}</h4>
                       <p className={`text-xs text-muted-foreground leading-relaxed transition-all duration-300 ${expandedCard === i ? 'line-clamp-none' : 'line-clamp-2'}`}>
                         {adv.desc}
                       </p>

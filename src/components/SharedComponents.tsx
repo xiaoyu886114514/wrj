@@ -22,18 +22,32 @@ export function SectionHeader({ tag, title, subtitle, className, align = 'center
         className
       )}
     >
-      <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-widest uppercase text-primary border border-primary/30 rounded-full bg-primary/5 mb-6">
-        {tag}
-      </span>
-      <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight text-foreground leading-tight">
+      <div className={cn('mb-6 flex items-center gap-4', align === 'center' ? 'justify-center' : 'justify-start')}>
+        <span className="trail-line h-px w-12 opacity-80" />
+        <span className="inline-flex items-center gap-2 rounded-full border border-primary/24 bg-primary/8 px-4 py-2 text-[11px] font-semibold text-primary">
+          <span className="signal-dot" />
+          <span className="hud-label">{tag}</span>
+        </span>
+        <span className="trail-line h-px w-12 opacity-50" />
+      </div>
+      <h2 className="font-display text-3xl font-bold tracking-[0.08em] text-foreground leading-tight lg:text-4xl xl:text-5xl">
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-4 text-base lg:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+        <p
+          className={cn(
+            'mt-5 text-base leading-relaxed text-muted-foreground lg:text-lg',
+            align === 'center' ? 'mx-auto max-w-3xl' : 'max-w-3xl'
+          )}
+        >
           {subtitle}
         </p>
       )}
-      <div className="mt-8 h-px w-20 bg-primary/40 mx-auto" style={{ marginLeft: align === 'left' ? 0 : undefined }} />
+      <div className={cn('mt-8 flex items-center gap-3', align === 'center' ? 'justify-center' : 'justify-start')}>
+        <span className="h-px w-16 bg-primary/70" />
+        <span className="h-2 w-2 rounded-full bg-primary shadow-[var(--shadow-glow-primary)]" />
+        <span className="h-px w-10 bg-accent/50" />
+      </div>
     </div>
   )
 }
@@ -49,7 +63,7 @@ export function GlassCard({ className, glow, hover = true, children, ...props }:
       className={cn(
         'glass-card p-6',
         glow && 'shadow-[var(--shadow-glow-primary)]',
-        hover && 'hover:translate-y-[-2px]',
+        !hover && 'hover:translate-y-0',
         className
       )}
       {...props}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
+import { Activity, ArrowRight, Menu, Radar, X } from 'lucide-react'
 
 const NAV_ITEMS = [
   { label: '首页', href: '#hero' },
@@ -45,41 +46,46 @@ export function Navbar() {
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
-        scrolled
-          ? 'py-3 bg-background/80 backdrop-blur-xl border-b border-border/50'
-          : 'py-5 bg-transparent'
+        scrolled ? 'py-3' : 'py-5'
       )}
     >
-      <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <nav
+        className={cn(
+          'mx-auto flex max-w-7xl items-center justify-between rounded-full px-4 transition-all duration-500 sm:px-6',
+          scrolled
+            ? 'hud-panel w-[calc(100%-1.5rem)] py-3 sm:w-[calc(100%-2.5rem)]'
+            : 'w-[calc(100%-1.5rem)] border border-primary/10 bg-background/35 py-4 backdrop-blur-md sm:w-[calc(100%-2.5rem)]'
+        )}
+      >
         {/* Logo */}
         <button
           onClick={() => handleClick('#hero')}
           className="flex items-center gap-3 group"
         >
-          <div className="w-9 h-9 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center group-hover:bg-primary/30 transition-all duration-300">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-primary/30 bg-primary/12 text-primary shadow-[var(--shadow-glow-primary)] transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/18">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-primary">
               <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
               <path d="M2 17l10 5 10-5" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
               <path d="M2 12l10 5 10-5" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
             </svg>
           </div>
-          <div>
-            <span className="text-sm font-bold tracking-wider text-foreground">翼启全域</span>
-            <span className="block text-[10px] tracking-widest text-muted-foreground uppercase">VTOL Logistics</span>
+          <div className="text-left">
+            <span className="block font-display text-sm font-bold tracking-[0.18em] text-foreground sm:text-base">翼启全域</span>
+            <span className="hud-label block text-[9px] text-muted-foreground sm:text-[10px]">VTOL Logistics Command</span>
           </div>
         </button>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center gap-1">
+        <div className="hidden items-center gap-1 xl:flex">
           {NAV_ITEMS.map(item => (
             <button
               key={item.href}
               onClick={() => handleClick(item.href)}
               className={cn(
-                'px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-300',
+                'rounded-full px-3 py-2 text-xs font-medium transition-all duration-300',
                 activeSection === item.href
-                  ? 'text-primary bg-primary/10'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                  ? 'bg-primary/14 text-primary shadow-[var(--shadow-glow-primary)]'
+                  : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
               )}
             >
               {item.label}
@@ -87,34 +93,49 @@ export function Navbar() {
           ))}
         </div>
 
+        <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden items-center gap-2 rounded-full border border-primary/14 bg-background/55 px-3 py-2 text-[11px] text-muted-foreground xl:flex">
+            <span className="signal-dot" />
+            <Radar className="h-3.5 w-3.5 text-primary" />
+            <span className="hud-label tracking-[0.18em]">System Online</span>
+          </div>
+          <button
+            onClick={() => handleClick('#advantages')}
+            className="flex items-center gap-2 rounded-full border border-primary/30 bg-primary/12 px-4 py-2 text-xs font-semibold text-primary transition-all duration-300 hover:bg-primary/18 hover:shadow-[var(--shadow-glow-primary)]"
+          >
+            <Activity className="h-4 w-4" />
+            核心能力
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+
         {/* Mobile toggle */}
         <button
-          className="lg:hidden p-2 text-muted-foreground hover:text-foreground"
+          className="rounded-full border border-primary/16 bg-background/55 p-2 text-muted-foreground transition-colors hover:text-foreground lg:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            {mobileOpen ? (
-              <path d="M18 6L6 18M6 6l12 12" />
-            ) : (
-              <path d="M3 12h18M3 6h18M3 18h18" />
-            )}
-          </svg>
+          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </nav>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-background/95 backdrop-blur-xl border-b border-border/50 px-6 py-4">
+        <div className="mx-3 mt-3 rounded-3xl border border-primary/16 bg-background/90 px-4 py-4 shadow-[var(--shadow-lg)] backdrop-blur-xl sm:mx-5 lg:hidden">
+          <div className="mb-3 flex items-center gap-2 rounded-2xl border border-primary/14 bg-primary/6 px-3 py-2 text-[11px] text-muted-foreground">
+            <span className="signal-dot" />
+            <Radar className="h-3.5 w-3.5 text-primary" />
+            <span className="hud-label">System Online</span>
+          </div>
           {NAV_ITEMS.map(item => (
             <button
               key={item.href}
               onClick={() => handleClick(item.href)}
               className={cn(
-                'block w-full text-left px-4 py-2.5 text-sm rounded-md transition-all duration-300 mb-1',
+                'mb-1 block w-full rounded-2xl px-4 py-3 text-left text-sm transition-all duration-300',
                 activeSection === item.href
-                  ? 'text-primary bg-primary/10'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                  ? 'bg-primary/12 text-primary'
+                  : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
               )}
             >
               {item.label}

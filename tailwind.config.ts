@@ -17,8 +17,8 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'Noto Sans SC', 'system-ui', 'sans-serif'],
-        display: ['Inter', 'Noto Sans SC', 'system-ui', 'sans-serif'],
+        sans: ['Space Grotesk', 'Noto Sans SC', 'system-ui', 'sans-serif'],
+        display: ['Orbitron', 'Space Grotesk', 'Noto Sans SC', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -111,6 +111,30 @@ const config: Config = {
           "25%": { transform: "translateY(-8px) rotateX(0deg)" },
           "75%": { transform: "translateY(-4px) rotateX(1deg)" },
         },
+        "beam-sweep": {
+          "0%": { transform: "translateX(-120%) skewX(-24deg)" },
+          "100%": { transform: "translateX(220%) skewX(-24deg)" },
+        },
+        "radar-spin": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+        "signal-blink": {
+          "0%, 100%": { opacity: "0.35", boxShadow: "0 0 0 hsl(var(--primary) / 0.0)" },
+          "50%": { opacity: "1", boxShadow: "0 0 18px hsl(var(--primary) / 0.8)" },
+        },
+        "grid-drift": {
+          "0%": { backgroundPosition: "0 0, 0 0" },
+          "100%": { backgroundPosition: "80px 80px, 80px 80px" },
+        },
+        "glow-shift": {
+          "0%, 100%": { opacity: "0.45", transform: "scale(1)" },
+          "50%": { opacity: "0.85", transform: "scale(1.08)" },
+        },
+        "float-tilt": {
+          "0%, 100%": { transform: "translateY(0) rotate(0deg)" },
+          "50%": { transform: "translateY(-14px) rotate(-1.25deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -125,6 +149,12 @@ const config: Config = {
         "expand-width": "expand-width 1s ease-out forwards",
         "counter": "counter 0.4s ease-out forwards",
         "drone-hover": "drone-hover 4s ease-in-out infinite",
+        "beam-sweep": "beam-sweep 5s linear infinite",
+        "radar-spin": "radar-spin 20s linear infinite",
+        "signal-blink": "signal-blink 2.2s ease-in-out infinite",
+        "grid-drift": "grid-drift 12s linear infinite",
+        "glow-shift": "glow-shift 6s ease-in-out infinite",
+        "float-tilt": "float-tilt 6s ease-in-out infinite",
       },
     },
   },
