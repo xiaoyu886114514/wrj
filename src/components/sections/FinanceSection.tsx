@@ -21,11 +21,11 @@ export function FinanceSection() {
 
   // Revenue projection data for visual bar chart
   const revenueData = [
-    { year: 'Y1', revenue: 200, cost: 500 },
-    { year: 'Y2', revenue: 1500, cost: 1200 },
-    { year: 'Y3', revenue: 5000, cost: 2800 },
-    { year: 'Y4', revenue: 8000, cost: 3500 },
-    { year: 'Y5', revenue: 15000, cost: 5000 },
+    { year: '第1年', revenue: 200, cost: 500 },
+    { year: '第2年', revenue: 1500, cost: 1200 },
+    { year: '第3年', revenue: 5000, cost: 2800 },
+    { year: '第4年', revenue: 8000, cost: 3500 },
+    { year: '第5年', revenue: 15000, cost: 5000 },
   ]
   const maxVal = 15000
 
@@ -34,7 +34,7 @@ export function FinanceSection() {
       <div className="absolute inset-0 bg-grid-pattern opacity-10" />
       <div className="section-container relative">
         <SectionHeader
-          tag="Financial Plan"
+          tag="财务预测"
           title="财务规划稳健，投资回报可期"
           subtitle="清晰的资金规划、可量化的盈利模型与全面的风险管控体系，为项目可持续发展保驾护航"
         />
@@ -133,7 +133,7 @@ export function FinanceSection() {
                   </div>
                   {activeRisk === i && (
                     <div className="mt-3 pt-3 border-t border-border/50 space-y-2">
-                      <span className="text-[10px] font-bold text-primary tracking-widest uppercase">应对措施</span>
+                      <span className="text-[10px] font-bold tracking-[0.16em] text-primary">应对措施</span>
                       {risk.measures.map((m, j) => (
                         <div key={j} className="flex items-start gap-2 text-xs text-muted-foreground">
                           <span className="text-primary mt-0.5 flex-shrink-0">&#10003;</span>

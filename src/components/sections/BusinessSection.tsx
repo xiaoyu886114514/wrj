@@ -68,7 +68,7 @@ export function BusinessSection() {
       <div className="absolute inset-0 bg-grid-pattern opacity-10" />
       <div className="section-container relative">
         <SectionHeader
-          tag="Business Model"
+          tag="商业模式"
           title="商业闭环清晰，多元盈利可期"
           subtitle="构建从核心客群到服务落地、盈利转化的完整商业闭环，打造可持续增长的低空物流运营平台"
         />
@@ -127,6 +127,8 @@ export function BusinessSection() {
                 <img
                   src={SCENARIOS[activeScene].image}
                   alt={SCENARIOS[activeScene].title}
+                  loading="lazy"
+                  decoding="async"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent to-background/80 lg:to-card/80" />

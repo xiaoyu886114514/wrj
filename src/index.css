@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&family=Orbitron:wght@500;700;800&family=Space+Grotesk:wght@400;500;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -94,10 +92,16 @@
   body {
     @apply bg-background text-foreground font-sans;
     overflow-x: hidden;
+    line-height: 1.6;
     background:
       radial-gradient(circle at 15% 18%, hsl(var(--primary) / 0.12), transparent 24%),
       radial-gradient(circle at 82% 0%, hsl(var(--accent) / 0.08), transparent 22%),
       linear-gradient(180deg, hsl(224 46% 5%), hsl(222 50% 3%));
+  }
+
+  img {
+    user-select: none;
+    -webkit-user-drag: none;
   }
 
   ::selection {
@@ -167,15 +171,6 @@
     transition: opacity 0.4s ease;
     pointer-events: none;
   }
-  .glass-card:hover {
-    border-color: var(--glass-border-glow);
-    box-shadow: var(--shadow-md), var(--shadow-glow-primary);
-    transform: translateY(-6px);
-  }
-  .glass-card:hover::before {
-    opacity: 1;
-  }
-
   /* Metal Card */
   .metal-card {
     background:
@@ -197,11 +192,6 @@
     height: 1px;
     background: linear-gradient(90deg, transparent, hsl(var(--titanium) / 0.3), transparent);
   }
-  .metal-card:hover {
-    border-color: hsl(var(--primary) / 0.26);
-    box-shadow: var(--shadow-md);
-  }
-
   .hud-panel {
     position: relative;
     overflow: hidden;
@@ -223,9 +213,8 @@
   }
 
   .hud-label {
-    font-family: 'Orbitron', 'Space Grotesk', sans-serif;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
+    font-family: Bahnschrift, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    letter-spacing: 0.18em;
   }
 
   .tech-frame {
@@ -379,4 +368,91 @@
   .animate-delay-600 { animation-delay: 600ms; }
   .animate-delay-700 { animation-delay: 700ms; }
   .animate-delay-800 { animation-delay: 800ms; }
+}
+
+@media (hover: hover) {
+  .glass-card:hover {
+    border-color: var(--glass-border-glow);
+    box-shadow: var(--shadow-md), var(--shadow-glow-primary);
+    transform: translateY(-6px);
+  }
+
+  .glass-card:hover::before {
+    opacity: 1;
+  }
+
+  .metal-card:hover {
+    border-color: hsl(var(--primary) / 0.26);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero-mesh {
+    animation-duration: 18s;
+    opacity: 0.2;
+  }
+
+  .glass-card,
+  .metal-card,
+  .hud-panel {
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .section-padding {
+    padding-top: 5.5rem;
+    padding-bottom: 5.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-mesh,
+  .tech-noise {
+    opacity: 0.08;
+  }
+
+  .scanner-line {
+    opacity: 0.45;
+    filter: blur(6px);
+  }
+
+  .section-divider {
+    max-width: 88%;
+  }
+
+  .section-padding {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .hero-mesh,
+  .trail-line,
+  .scanner-line,
+  .signal-dot,
+  .animate-fade-in-up,
+  .animate-float,
+  .animate-float-tilt,
+  .animate-glow-shift,
+  .animate-drone-hover,
+  .animate-radar-spin,
+  .animate-pulse-glow,
+  .animate-beam-sweep {
+    animation: none !important;
+  }
+
+  .glass-card,
+  .metal-card,
+  .hud-panel {
+    transition: none;
+  }
 }

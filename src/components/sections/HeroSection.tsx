@@ -1,180 +1,175 @@
 import { useState } from 'react'
-import { useMousePosition } from '@/hooks/useAnimations'
 import { Button } from '@/components/ui/button'
 import {
+  ArrowDown,
   BatteryCharging,
-  ChevronDown,
-  Crosshair,
+  ChevronRight,
   Cpu,
   Gauge,
-  MoveRight,
+  MapPinned,
   Navigation,
   Package,
   Radar,
   Route,
   ShieldCheck,
-  Waves,
   Wind,
 } from 'lucide-react'
 
-const HERO_METRICS = [
-  { label: '零跑道起降', value: '0m²', detail: '任意开阔地快速部署' },
-  { label: '最大航程', value: '200km', detail: '跨山区、海岛、灾区直达' },
-  { label: '有效载重', value: '15kg', detail: '覆盖医药与中小件物流' },
-  { label: '巡航速度', value: '120km/h', detail: '固定翼高效长距离巡航' },
+const 顶部标签 = ['低空物流官网', '垂直起降固定翼', '全域智能运输平台']
+
+const 核心数据 = [
+  { label: '起降场地需求', value: '0m²', detail: '无跑道部署，乡村与海岛快速起飞' },
+  { label: '最大航程', value: '200km', detail: '覆盖中远距物资补给与跨地形运输' },
+  { label: '有效载重', value: '15kg', detail: '适配医药、电商、应急等任务载荷' },
+  { label: '巡航速度', value: '120km/h', detail: '固定翼高效巡航，兼顾时效与成本' },
 ]
 
-const COMMAND_CARDS = [
+const 首屏能力卡 = [
   {
     icon: Navigation,
-    title: 'VTOL 双模飞行',
-    desc: '垂直起降解决场地约束，固定翼巡航保证长航程与高效率。',
+    title: '垂直起降，快速部署',
+    desc: '任意开阔地即可起飞，真正适合山区、乡村、海岛与灾害现场。',
   },
   {
     icon: BatteryCharging,
-    title: '混合动力续航',
-    desc: '油电混动支撑长时间任务执行，兼顾大载荷与能源利用率。',
+    title: '混合动力，长航时执行',
+    desc: '兼顾载重、航程与能效，让无人机从演示设备升级为运营平台。',
   },
   {
     icon: ShieldCheck,
-    title: '安全冗余飞控',
-    desc: '北斗 + GPS + IMU + 视觉辅助，复杂低空环境依然稳定可控。',
+    title: '智能飞控，稳定可靠',
+    desc: '多源感知与冗余控制协同工作，复杂低空环境依然保持安全飞行。',
   },
 ]
 
-const HERO_SYSTEMS = [
+const 系统节点 = [
   {
-    id: 'vtol',
+    id: '起降',
     icon: Navigation,
-    label: 'VTOL Matrix',
-    title: '零跑道垂直起降',
-    desc: '四旋翼垂起与固定翼巡航无缝切换，山区、海岛、乡村、灾区都能迅速完成部署。',
-    value: 'All-Terrain',
-    meta: 'Any Launch Zone',
-    x: '16%',
+    short: '垂直起降',
+    title: '零跑道垂直起降系统',
+    desc: '四旋翼垂直起降与固定翼巡航无缝切换，大幅降低场地约束，适合偏远场景的快速部署。',
+    value: '任意开阔地',
+    meta: '部署能力',
+    x: '15%',
     y: '34%',
   },
   {
-    id: 'hybrid',
+    id: '动力',
     icon: BatteryCharging,
-    label: 'Hybrid Core',
-    title: '油电混动长航时',
-    desc: '巡航阶段能效更高，兼顾 200km 航程与 15kg 级载荷，适合中远距物流运输。',
+    short: '混合动力',
+    title: '油电混动长航时动力',
+    desc: '兼顾 200km 航程与 15kg 级任务载荷，支撑低空物流从单次飞行走向持续运营。',
     value: '200km',
-    meta: 'Hybrid Power',
-    x: '76%',
-    y: '26%',
+    meta: '任务半径',
+    x: '78%',
+    y: '24%',
   },
   {
-    id: 'cargo',
+    id: '货舱',
     icon: Package,
-    label: 'Cargo Pod',
-    title: '模块化智能货舱',
-    desc: '标准化货舱接口可快速换舱，支持快递、电商、农产品、应急物资等多种任务。',
-    value: '15kg',
-    meta: 'Rapid Swap',
-    x: '57%',
-    y: '72%',
+    short: '智能货舱',
+    title: '模块化智能货舱接口',
+    desc: '支持标准物流箱、应急物资、样本运输等场景快速换舱，提升效率与任务切换能力。',
+    value: '30秒换舱',
+    meta: '运营效率',
+    x: '58%',
+    y: '74%',
   },
   {
-    id: 'brain',
+    id: '飞控',
     icon: Cpu,
-    label: 'Flight Brain',
-    title: '自主飞控与智能航线',
-    desc: '多传感器融合导航与路径规划协同工作，提升定位精度、航线稳定性与安全冗余。',
-    value: 'Dual GNSS',
-    meta: 'Autonomous Route',
-    x: '33%',
-    y: '16%',
+    short: '自主飞控',
+    title: '自主飞控与航线规划',
+    desc: '融合北斗、GPS、惯导与视觉辅助，实现更稳的航迹保持、更强的环境适应和更高的安全冗余。',
+    value: '双模导航',
+    meta: '定位系统',
+    x: '35%',
+    y: '14%',
   },
 ]
 
-const STATUS_STRIPS = [
-  { icon: Radar, title: 'Flight Network', text: '低空航路感知 / 任务链路在线' },
-  { icon: Waves, title: 'Stability Control', text: '复杂地形与低空环境保持稳定姿态' },
-  { icon: Route, title: 'Mission Routing', text: '山区、海岛、城乡末端多场景覆盖' },
+const 状态条 = [
+  { icon: Radar, title: '航路感知在线', text: '低空链路感知、环境侦测与任务监控同步运行。' },
+  { icon: Route, title: '多场景任务覆盖', text: '乡村配送、应急救援、海岛补给与城际运输统一调度。' },
+  { icon: MapPinned, title: '全域部署能力', text: '从起飞条件、航程到装载能力均围绕真实物流场景设计。' },
 ]
 
 export function HeroSection() {
-  const mouse = useMousePosition()
-  const [activeSystem, setActiveSystem] = useState(HERO_SYSTEMS[0])
+  const [activeSystem, setActiveSystem] = useState(系统节点[0])
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <section id="hero" className="relative flex min-h-screen items-center overflow-hidden pb-16 pt-32 lg:pt-36">
-      <div className="absolute inset-0 bg-grid-pattern opacity-[0.08]" />
+    <section id="hero" className="relative flex min-h-screen items-center overflow-hidden pb-14 pt-28 sm:pt-32 lg:pt-36">
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.06]" />
       <div className="absolute inset-0" style={{ background: 'var(--gradient-hero)' }} />
-      <div className="absolute inset-x-0 top-0 h-px bg-primary/30" />
-      <div className="absolute left-[12%] top-[18%] h-48 w-48 rounded-full bg-primary/12 blur-3xl" />
-      <div className="absolute bottom-[18%] right-[6%] h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
+      <div className="absolute inset-x-0 top-0 h-px bg-primary/20" />
+      <div className="absolute left-[10%] top-[16%] h-40 w-40 rounded-full bg-primary/10 blur-3xl sm:h-56 sm:w-56" />
+      <div className="absolute bottom-[16%] right-[6%] h-44 w-44 rounded-full bg-accent/10 blur-3xl sm:h-64 sm:w-64" />
 
       <div className="section-container relative z-10">
-        <div className="grid items-center gap-14 lg:grid-cols-[1.04fr_0.96fr]">
+        <div className="grid items-center gap-12 xl:grid-cols-[1.02fr_0.98fr]">
           <div className="max-w-3xl">
             <div className="mb-6 flex flex-wrap items-center gap-3">
-              {['UAV Logistics', 'VTOL Fixed-Wing', '低空经济主战场'].map((tag, index) => (
+              {顶部标签.map((tag, index) => (
                 <span
                   key={tag}
                   className="inline-flex items-center gap-2 rounded-full border border-primary/18 bg-primary/8 px-4 py-2 text-[11px] font-semibold text-primary animate-fade-in-up opacity-0"
-                  style={{ animationDelay: `${index * 120 + 100}ms` }}
+                  style={{ animationDelay: `${index * 120 + 80}ms` }}
                 >
                   <span className="signal-dot" />
-                  <span className="hud-label">{tag}</span>
+                  <span className="hud-label text-[10px]">{tag}</span>
                 </span>
               ))}
             </div>
 
-            <div className="animate-fade-in-up opacity-0" style={{ animationDelay: '240ms' }}>
-              <p className="hud-label mb-4 text-[11px] text-primary/80">Aerial Command Interface // Smart VTOL Logistics</p>
-              <h1 className="font-display text-5xl font-black leading-[1.02] tracking-[0.1em] text-foreground sm:text-6xl lg:text-7xl xl:text-[5.35rem]">
+            <div className="animate-fade-in-up opacity-0" style={{ animationDelay: '220ms' }}>
+              <p className="mb-4 text-[11px] font-semibold tracking-[0.24em] text-primary/80">
+                面向偏远运输、应急投送与低空物流网络建设的核心飞行平台
+              </p>
+              <h1 className="font-display text-5xl font-black leading-[1.04] tracking-[0.08em] text-foreground sm:text-6xl lg:text-7xl xl:text-[5.2rem]">
                 翼启全域
                 <span className="mt-2 block text-gradient-primary glow-text">智运无疆</span>
               </h1>
             </div>
 
-            <div className="animate-fade-in-up opacity-0" style={{ animationDelay: '420ms' }}>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-foreground/88 lg:text-xl">
-                以垂直起降固定翼无人机为核心，打造更快、更远、更稳的低空物流网络，
-                让偏远末端配送、跨地形运输与应急投送具备真正的规模化能力。
+            <div className="animate-fade-in-up opacity-0" style={{ animationDelay: '360ms' }}>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-foreground/88 sm:text-lg lg:text-xl">
+                以垂直起降固定翼无人机为核心，构建更快、更远、更稳定的低空物流解决方案，
+                让山区、海岛、乡村和应急场景具备真正可执行、可扩展、可运营的空中运输能力。
               </p>
               <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground lg:text-base">
-                重点突出 VTOL 零场地部署、固定翼长航程巡航、模块化货舱与智能飞控，让页面第一眼就传达
-                “这是能打硬仗的无人机平台”。
+                这不是单一飞行器的展示页，而是一套围绕低空运输效率、可靠性和落地场景打造的产品化平台官网。
               </p>
             </div>
 
-            <div className="mt-8 flex flex-col gap-4 animate-fade-in-up opacity-0 sm:flex-row" style={{ animationDelay: '560ms' }}>
+            <div className="mt-8 flex flex-col gap-4 animate-fade-in-up opacity-0 sm:flex-row" style={{ animationDelay: '520ms' }}>
               <Button
                 variant="hero"
                 size="xl"
                 onClick={() => scrollTo('advantages')}
-                className="group relative overflow-hidden rounded-full border border-primary/30 px-8"
+                className="group rounded-full border border-primary/30 px-8"
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  查看核心优势
-                  <MoveRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </span>
-                <div className="absolute inset-0 bg-primary/20 rounded-full scale-0 transition-transform duration-500 group-hover:scale-100" />
+                查看核心优势
+                <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
-
               <Button
                 variant="glow"
                 size="xl"
                 onClick={() => scrollTo('technology')}
                 className="rounded-full border border-primary/18 px-8"
               >
-                <Radar className="mr-2 h-4 w-4" />
                 进入技术路线
               </Button>
             </div>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4 animate-fade-in-up opacity-0" style={{ animationDelay: '720ms' }}>
-              {HERO_METRICS.map(item => (
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4 animate-fade-in-up opacity-0" style={{ animationDelay: '680ms' }}>
+              {核心数据.map(item => (
                 <div key={item.label} className="metric-tile p-4">
-                  <div className="hud-label text-[10px] text-muted-foreground">{item.label}</div>
+                  <div className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground">{item.label}</div>
                   <div className="mt-3 data-value text-3xl font-black">{item.value}</div>
                   <div className="mt-2 text-xs leading-6 text-muted-foreground">{item.detail}</div>
                 </div>
@@ -182,20 +177,17 @@ export function HeroSection() {
             </div>
 
             <div className="mt-10 grid gap-4 md:grid-cols-3">
-              {COMMAND_CARDS.map((card, index) => (
+              {首屏能力卡.map((card, index) => (
                 <div
                   key={card.title}
                   className="hud-panel animate-fade-in-up p-4 opacity-0"
-                  style={{ animationDelay: `${820 + index * 120}ms` }}
+                  style={{ animationDelay: `${780 + index * 120}ms` }}
                 >
                   <div className="mb-3 flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10">
                       <card.icon className="h-5 w-5 text-primary" />
                     </div>
-                    <div>
-                      <div className="hud-label text-[10px] text-primary/75">Capability</div>
-                      <div className="text-sm font-semibold text-foreground">{card.title}</div>
-                    </div>
+                    <div className="text-sm font-semibold text-foreground">{card.title}</div>
                   </div>
                   <p className="text-xs leading-6 text-muted-foreground">{card.desc}</p>
                 </div>
@@ -204,91 +196,97 @@ export function HeroSection() {
           </div>
 
           <div className="relative mx-auto w-full max-w-[640px]">
-            <div className="absolute inset-0 rounded-full bg-primary/10 blur-3xl animate-glow-shift" />
+            <div className="absolute inset-0 rounded-full bg-primary/8 blur-3xl animate-glow-shift" />
 
-            <div className="tech-frame relative aspect-[1/1.04] p-5 sm:p-7">
-              <div className="absolute inset-5 rounded-[1.75rem] border border-primary/12" />
-              <div className="absolute inset-[12%] rounded-full border border-primary/10" />
-              <div className="absolute inset-[19%] rounded-full border border-dashed border-primary/14 animate-radar-spin" />
-              <div className="absolute left-1/2 top-1/2 h-[64%] w-[64%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/12" />
-              <div className="scanner-line opacity-70" />
+            <div className="tech-frame relative aspect-[1/1.02] p-4 sm:p-6">
+              <div className="absolute inset-4 rounded-[1.7rem] border border-primary/10 sm:inset-6" />
+              <div className="absolute inset-[14%] rounded-full border border-primary/10" />
+              <div className="absolute inset-[22%] rounded-full border border-dashed border-primary/12 animate-radar-spin" />
+              <div className="absolute left-1/2 top-[44%] h-[58%] w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/10" />
+              <div className="scanner-line opacity-60" />
 
-              <div className="absolute left-5 top-5 max-w-[200px] rounded-2xl border border-primary/16 bg-background/72 p-3 backdrop-blur-xl">
-                <div className="hud-label text-[10px] text-primary">Mission Profile</div>
-                <div className="mt-2 flex items-start gap-3">
-                  <Crosshair className="mt-0.5 h-4 w-4 text-accent" />
-                  <p className="text-xs leading-6 text-muted-foreground">
-                    面向山区、海岛、乡村和应急场景，完成中远距高时效物资投送。
-                  </p>
-                </div>
+              <div className="absolute left-4 top-4 max-w-[190px] rounded-2xl border border-primary/14 bg-background/72 px-3 py-3 backdrop-blur-xl sm:left-6 sm:top-6 sm:max-w-[210px] sm:px-4">
+                <div className="text-[10px] font-semibold tracking-[0.16em] text-primary">任务画像</div>
+                <p className="mt-2 text-xs leading-6 text-muted-foreground">
+                  面向偏远配送、紧急投送与复杂地形运输，强调部署效率与稳定运营能力。
+                </p>
               </div>
 
-              <div className="absolute right-5 top-5 rounded-2xl border border-primary/16 bg-background/72 px-4 py-3 text-right backdrop-blur-xl">
-                <div className="hud-label text-[10px] text-muted-foreground">Flight Integrity</div>
+              <div className="absolute right-6 top-6 hidden rounded-2xl border border-primary/14 bg-background/72 px-4 py-3 text-right backdrop-blur-xl sm:block">
+                <div className="text-[10px] font-semibold tracking-[0.16em] text-muted-foreground">系统状态</div>
                 <div className="mt-2 flex items-center justify-end gap-2 text-primary">
                   <span className="signal-dot" />
-                  <span className="font-display text-sm tracking-[0.18em]">ONLINE</span>
+                  <span className="font-display text-sm font-bold tracking-[0.16em]">在线运行</span>
                 </div>
-                <div className="mt-2 text-xs text-muted-foreground">Dual GNSS / Smart Avoidance</div>
+                <div className="mt-2 text-xs text-muted-foreground">导航、避障、任务链路已联通</div>
               </div>
 
-              <div
-                className="absolute left-1/2 top-[48%] w-[72%] -translate-x-1/2 -translate-y-1/2"
-                style={{
-                  transform: `translate(calc(-50% + ${(mouse.x - 0.5) * 24}px), calc(-50% + ${(mouse.y - 0.5) * 18}px))`,
-                  transition: 'transform 0.25s ease-out',
-                }}
-              >
+              <div className="absolute left-1/2 top-[46%] w-[78%] -translate-x-1/2 -translate-y-1/2">
                 <img
                   src="/images/drone-main.png"
-                  alt="VTOL fixed-wing drone"
-                  className="w-full object-contain drop-shadow-[0_0_65px_rgba(0,229,255,0.22)] animate-drone-hover"
+                  alt="垂直起降固定翼无人机"
+                  fetchPriority="high"
+                  className="w-full object-contain drop-shadow-[0_0_42px_rgba(0,229,255,0.18)] animate-float-tilt"
                 />
               </div>
 
-              {HERO_SYSTEMS.map(item => (
+              {系统节点.map(item => (
                 <button
                   key={item.id}
                   onClick={() => setActiveSystem(item)}
-                  className="group absolute -translate-x-1/2 -translate-y-1/2"
+                  className="group absolute hidden -translate-x-1/2 -translate-y-1/2 lg:block"
                   style={{ left: item.x, top: item.y }}
                 >
                   <div className="relative">
-                    <span
-                      className={`absolute inset-0 rounded-full bg-primary/20 ${activeSystem.id === item.id ? 'animate-ping' : 'opacity-0 group-hover:opacity-100'}`}
-                    />
+                    <span className={`absolute inset-0 rounded-full ${activeSystem.id === item.id ? 'bg-primary/20 animate-ping' : 'opacity-0 group-hover:opacity-100'} transition-opacity`} />
                     <span
                       className={`relative flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-300 ${
                         activeSystem.id === item.id
                           ? 'border-primary bg-primary/18 text-primary shadow-[var(--shadow-glow-primary)]'
-                          : 'border-primary/35 bg-background/70 text-foreground/70 group-hover:border-primary/70 group-hover:text-primary'
+                          : 'border-primary/30 bg-background/72 text-foreground/75 group-hover:border-primary/60 group-hover:text-primary'
                       }`}
                     >
                       <item.icon className="h-5 w-5" />
                     </span>
                   </div>
                   <span
-                    className={`mt-2 block rounded-full border px-3 py-1 text-[10px] font-semibold tracking-[0.18em] transition-all duration-300 ${
+                    className={`mt-2 block rounded-full border px-3 py-1 text-[10px] font-semibold tracking-[0.14em] transition-all duration-300 ${
                       activeSystem.id === item.id
                         ? 'border-primary/24 bg-primary/10 text-primary'
-                        : 'border-border/60 bg-background/68 text-muted-foreground group-hover:text-foreground'
+                        : 'border-border/60 bg-background/72 text-muted-foreground group-hover:text-foreground'
                     }`}
                   >
-                    {item.label}
+                    {item.short}
                   </span>
                 </button>
               ))}
 
-              <div className="absolute bottom-5 left-5 right-5 hud-panel p-4">
+              <div className="absolute bottom-4 left-4 right-4 hud-panel p-4 sm:bottom-6 sm:left-6 sm:right-6 sm:p-5">
+                <div className="mb-4 grid grid-cols-2 gap-2 lg:hidden">
+                  {系统节点.map(item => (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveSystem(item)}
+                      className={`rounded-2xl border px-3 py-2 text-left text-xs transition-all ${
+                        activeSystem.id === item.id
+                          ? 'border-primary/24 bg-primary/10 text-primary'
+                          : 'border-border/60 bg-background/65 text-muted-foreground'
+                      }`}
+                    >
+                      {item.short}
+                    </button>
+                  ))}
+                </div>
+
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <div className="hud-label text-[10px] text-primary/80">{activeSystem.label}</div>
-                    <h3 className="mt-2 text-xl font-semibold text-foreground">{activeSystem.title}</h3>
+                    <div className="text-[10px] font-semibold tracking-[0.16em] text-primary/80">系统焦点</div>
+                    <h3 className="mt-2 text-lg font-semibold text-foreground sm:text-xl">{activeSystem.title}</h3>
                     <p className="mt-2 max-w-xl text-sm leading-7 text-muted-foreground">{activeSystem.desc}</p>
                   </div>
-                  <div className="min-w-[120px] rounded-2xl border border-primary/14 bg-background/55 px-4 py-3 text-right">
-                    <div className="hud-label text-[10px] text-muted-foreground">{activeSystem.meta}</div>
-                    <div className="mt-2 font-display text-lg font-bold tracking-[0.16em] text-primary">
+                  <div className="min-w-[136px] rounded-2xl border border-primary/14 bg-background/55 px-4 py-3 text-right">
+                    <div className="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground">{activeSystem.meta}</div>
+                    <div className="mt-2 font-display text-base font-bold tracking-[0.12em] text-primary sm:text-lg">
                       {activeSystem.value}
                     </div>
                   </div>
@@ -297,11 +295,11 @@ export function HeroSection() {
             </div>
 
             <div className="mt-5 grid gap-3 md:grid-cols-3">
-              {STATUS_STRIPS.map(item => (
+              {状态条.map(item => (
                 <div key={item.title} className="rounded-2xl border border-primary/12 bg-background/58 p-4 backdrop-blur-xl">
                   <div className="mb-3 flex items-center gap-2 text-primary">
                     <item.icon className="h-4 w-4" />
-                    <span className="hud-label text-[10px]">{item.title}</span>
+                    <span className="text-[11px] font-semibold tracking-[0.14em]">{item.title}</span>
                   </div>
                   <p className="text-xs leading-6 text-muted-foreground">{item.text}</p>
                 </div>
@@ -315,9 +313,9 @@ export function HeroSection() {
             onClick={() => scrollTo('market')}
             className="group flex flex-col items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
           >
-            <span className="hud-label text-[10px]">Scroll for full mission deck</span>
-            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/18 bg-primary/6">
-              <ChevronDown className="h-5 w-5 transition-transform group-hover:translate-y-1" />
+            <span className="text-[10px] font-semibold tracking-[0.18em]">继续查看项目全貌</span>
+            <div className="flex h-11 w-11 items-center justify-center rounded-full border border-primary/18 bg-primary/6">
+              <ArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-1" />
             </div>
           </button>
         </div>
@@ -325,12 +323,12 @@ export function HeroSection() {
         <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <Wind className="h-4 w-4 text-primary" />
-            支持复杂低空环境稳定飞行
+            复杂低空环境下保持稳定姿态与航迹控制
           </div>
           <div className="hidden h-4 w-px bg-border/60 sm:block" />
           <div className="flex items-center gap-2">
             <Gauge className="h-4 w-4 text-accent" />
-            用更强视觉直接传达平台级无人机能力
+            兼顾部署效率、运输时效与平台化运营能力
           </div>
         </div>
       </div>

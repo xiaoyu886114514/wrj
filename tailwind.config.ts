@@ -17,8 +17,8 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: ['Space Grotesk', 'Noto Sans SC', 'system-ui', 'sans-serif'],
-        display: ['Orbitron', 'Space Grotesk', 'Noto Sans SC', 'sans-serif'],
+        sans: ['"PingFang SC"', '"Microsoft YaHei"', '"Noto Sans SC"', '"Segoe UI"', 'sans-serif'],
+        display: ['Bahnschrift', '"Segoe UI"', '"PingFang SC"', '"Microsoft YaHei"', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

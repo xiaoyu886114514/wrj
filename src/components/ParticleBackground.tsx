@@ -18,74 +18,101 @@ export function ParticleBackground() {
   const particlesRef = useRef<Particle[]>([])
 
   useEffect(() => {
-    const canvasElement = canvasRef.current
-    if (!canvasElement) return
-    const renderingContext = canvasElement.getContext('2d')
-    if (!renderingContext) return
-    const canvas: HTMLCanvasElement = canvasElement
-    const context: CanvasRenderingContext2D = renderingContext
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const context = canvas.getContext('2d')
+    if (!context) return
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const coarsePointer = window.matchMedia('(pointer: coarse)').matches
 
     let animationId = 0
     let width = 0
     let height = 0
-    let tick = 0
-    let dpr = Math.min(window.devicePixelRatio || 1, 2)
+    let frame = 0
+    let dpr = Math.min(window.devicePixelRatio || 1, 1.75)
 
-    function resize() {
+    const getConfig = () => {
+      const compact = window.innerWidth < 768
+
+      if (reducedMotion) {
+        return {
+          enabled: false,
+          count: 0,
+          lanes: 0,
+          linkDistance: 0,
+          cursorSweep: false,
+        }
+      }
+
+      if (compact || coarsePointer) {
+        return {
+          enabled: true,
+          count: Math.min(22, Math.floor((window.innerWidth * window.innerHeight) / 32000)),
+          lanes: 2,
+          linkDistance: 0,
+          cursorSweep: false,
+        }
+      }
+
+      return {
+        enabled: true,
+        count: Math.min(56, Math.floor((window.innerWidth * window.innerHeight) / 21000)),
+        lanes: 3,
+        linkDistance: 92,
+        cursorSweep: true,
+      }
+    }
+
+    let config = getConfig()
+
+    const createParticle = (w: number, h: number): Particle => {
+      const tone = Math.random() > 0.88 ? 'accent' : 'primary'
+
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.28 + 0.04,
+        vy: (Math.random() - 0.5) * 0.18,
+        size: Math.random() * 1.8 + 0.5,
+        opacity: Math.random() * 0.32 + 0.08,
+        life: 0,
+        maxLife: Math.random() * 520 + 240,
+        tone,
+      }
+    }
+
+    const primaryColor = (alpha: number) => `rgba(0, 229, 255, ${alpha})`
+    const accentColor = (alpha: number) => `rgba(255, 126, 51, ${alpha})`
+
+    const resize = () => {
       width = window.innerWidth
       height = window.innerHeight
-      dpr = Math.min(window.devicePixelRatio || 1, 2)
+      dpr = Math.min(window.devicePixelRatio || 1, 1.75)
+      config = getConfig()
+
       canvas.width = width * dpr
       canvas.height = height * dpr
       canvas.style.width = `${width}px`
       canvas.style.height = `${height}px`
       context.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+      particlesRef.current = Array.from({ length: config.count }, () => createParticle(width, height))
     }
 
-    function handleMouse(e: MouseEvent) {
-      mouseRef.current = { x: e.clientX, y: e.clientY }
+    const handleMouse = (event: MouseEvent) => {
+      mouseRef.current = { x: event.clientX, y: event.clientY }
     }
 
-    function createParticle(w: number, h: number): Particle {
-      const tone = Math.random() > 0.86 ? 'accent' : 'primary'
-
-      return {
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.32 + 0.08,
-        vy: (Math.random() - 0.5) * 0.24,
-        size: Math.random() * 2.1 + 0.6,
-        opacity: Math.random() * 0.42 + 0.12,
-        life: 0,
-        maxLife: Math.random() * 520 + 220,
-        tone,
-      }
-    }
-
-    function primaryColor(alpha: number) {
-      return `rgba(0, 229, 255, ${alpha})`
-    }
-
-    function accentColor(alpha: number) {
-      return `rgba(255, 126, 51, ${alpha})`
-    }
-
-    resize()
-    window.addEventListener('resize', resize)
-    window.addEventListener('mousemove', handleMouse)
-
-    const count = Math.min(110, Math.floor((width * height) / 13500))
-    particlesRef.current = Array.from({ length: count }, () => createParticle(width, height))
-
-    function drawStreams() {
-      const lanes = 4
-      for (let i = 0; i < lanes; i++) {
-        const y = height * (0.2 + i * 0.19)
-        const offset = (tick * (0.5 + i * 0.12)) % (width + 180)
+    const drawStreams = () => {
+      for (let index = 0; index < config.lanes; index++) {
+        const y = height * (0.22 + index * 0.22)
+        const offset = (frame * (0.35 + index * 0.09)) % (width + 180)
         const gradient = context.createLinearGradient(offset - 180, y, offset + 180, y)
         gradient.addColorStop(0, 'rgba(0,0,0,0)')
-        gradient.addColorStop(0.45, 'rgba(0,229,255,0.04)')
-        gradient.addColorStop(0.55, 'rgba(255,126,51,0.03)')
+        gradient.addColorStop(0.45, 'rgba(0,229,255,0.03)')
+        gradient.addColorStop(0.55, 'rgba(255,126,51,0.025)')
         gradient.addColorStop(1, 'rgba(0,0,0,0)')
 
         context.strokeStyle = gradient
@@ -97,31 +124,25 @@ export function ParticleBackground() {
       }
     }
 
-    function drawCursorSweep(mx: number, my: number) {
-      if (!mx && !my) return
+    const drawCursorSweep = (mx: number, my: number) => {
+      if (!config.cursorSweep || (!mx && !my)) return
 
       context.beginPath()
-      context.arc(mx, my, 72, 0, Math.PI * 2)
-      context.strokeStyle = 'rgba(0, 229, 255, 0.12)'
+      context.arc(mx, my, 68, 0, Math.PI * 2)
+      context.strokeStyle = 'rgba(0, 229, 255, 0.08)'
       context.lineWidth = 1
       context.stroke()
 
       context.beginPath()
-      context.arc(mx, my, 132, 0, Math.PI * 2)
-      context.strokeStyle = 'rgba(0, 229, 255, 0.05)'
-      context.stroke()
-
-      context.beginPath()
-      context.moveTo(mx - 14, my)
-      context.lineTo(mx + 14, my)
-      context.moveTo(mx, my - 14)
-      context.lineTo(mx, my + 14)
-      context.strokeStyle = 'rgba(255, 126, 51, 0.18)'
+      context.arc(mx, my, 118, 0, Math.PI * 2)
+      context.strokeStyle = 'rgba(0, 229, 255, 0.035)'
       context.stroke()
     }
 
-    function draw() {
-      tick += 1
+    const draw = () => {
+      if (!config.enabled) return
+
+      frame += 1
       context.clearRect(0, 0, width, height)
       drawStreams()
 
@@ -133,20 +154,22 @@ export function ParticleBackground() {
         const particle = particles[i]
         particle.life += 1
 
-        const dx = mx - particle.x
-        const dy = my - particle.y
-        const dist = Math.sqrt(dx * dx + dy * dy)
+        if (config.cursorSweep) {
+          const dx = mx - particle.x
+          const dy = my - particle.y
+          const distance = Math.sqrt(dx * dx + dy * dy)
 
-        if (dist < 180) {
-          const force = ((180 - dist) / 180) * 0.02
-          particle.vx += dx * force * 0.01
-          particle.vy += dy * force * 0.01
+          if (distance < 160) {
+            const force = ((160 - distance) / 160) * 0.012
+            particle.vx += dx * force * 0.01
+            particle.vy += dy * force * 0.01
+          }
         }
 
         particle.x += particle.vx
         particle.y += particle.vy
-        particle.vx *= 0.992
-        particle.vy *= 0.992
+        particle.vx *= 0.993
+        particle.vy *= 0.993
 
         if (
           particle.x < -40 ||
@@ -167,25 +190,26 @@ export function ParticleBackground() {
               : 1
 
         const alpha = particle.opacity * lifeFade
-        const fill = particle.tone === 'accent' ? accentColor(alpha) : primaryColor(alpha)
-
         context.beginPath()
         context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
-        context.fillStyle = fill
+        context.fillStyle = particle.tone === 'accent' ? accentColor(alpha) : primaryColor(alpha)
         context.fill()
+
+        if (!config.linkDistance || particle.tone !== 'primary') continue
 
         for (let j = i + 1; j < particles.length; j++) {
           const next = particles[j]
-          const distance = Math.sqrt((particle.x - next.x) ** 2 + (particle.y - next.y) ** 2)
+          if (next.tone !== 'primary') continue
 
-          if (distance < 110 && particle.tone === 'primary' && next.tone === 'primary') {
-            context.beginPath()
-            context.moveTo(particle.x, particle.y)
-            context.lineTo(next.x, next.y)
-            context.strokeStyle = primaryColor(0.05 * (1 - distance / 110))
-            context.lineWidth = 0.6
-            context.stroke()
-          }
+          const distance = Math.sqrt((particle.x - next.x) ** 2 + (particle.y - next.y) ** 2)
+          if (distance >= config.linkDistance) continue
+
+          context.beginPath()
+          context.moveTo(particle.x, particle.y)
+          context.lineTo(next.x, next.y)
+          context.strokeStyle = primaryColor(0.04 * (1 - distance / config.linkDistance))
+          context.lineWidth = 0.55
+          context.stroke()
         }
       }
 
@@ -193,7 +217,17 @@ export function ParticleBackground() {
       animationId = requestAnimationFrame(draw)
     }
 
-    draw()
+    resize()
+
+    if (!reducedMotion && !coarsePointer) {
+      window.addEventListener('mousemove', handleMouse)
+    }
+
+    window.addEventListener('resize', resize)
+
+    if (config.enabled) {
+      draw()
+    }
 
     return () => {
       cancelAnimationFrame(animationId)

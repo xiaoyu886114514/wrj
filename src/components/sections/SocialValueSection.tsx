@@ -63,7 +63,7 @@ export function SocialValueSection() {
       <div className="absolute inset-0 bg-dot-pattern opacity-10" />
       <div className="section-container relative">
         <SectionHeader
-          tag="Social Value"
+          tag="社会价值"
           title="科技向善，赋能社会可持续发展"
           subtitle="以无人机物流为载体，在乡村振兴、应急救援、绿色运输、就业创造等维度创造深远社会价值"
         />

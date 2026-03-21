@@ -12,10 +12,10 @@ const TEAM_MEMBERS = [
 ]
 
 const RESOURCES = [
-  { icon: FileText, title: '项目完整策划书', desc: '包含项目背景、技术方案、商业模式等完整内容', type: 'PDF' },
-  { icon: Award, title: '专利与知识产权', desc: '飞控算法、货舱系统等核心技术专利证书', type: 'PDF' },
-  { icon: TestTube, title: '产品测试报告', desc: '原型机飞行测试数据、性能验证报告', type: 'PDF' },
-  { icon: ClipboardCheck, title: '赛事相关材料', desc: '三创赛参赛申报材料、项目路演PPT', type: 'ZIP' },
+  { icon: FileText, title: '项目完整策划书', desc: '包含项目背景、技术方案、商业模式等完整内容', type: '文档' },
+  { icon: Award, title: '专利与知识产权', desc: '飞控算法、货舱系统等核心技术专利证书', type: '文档' },
+  { icon: TestTube, title: '产品测试报告', desc: '原型机飞行测试数据、性能验证报告', type: '文档' },
+  { icon: ClipboardCheck, title: '赛事相关材料', desc: '三创赛参赛申报材料、项目路演演示文件', type: '资料包' },
 ]
 
 export function TeamSection() {
@@ -35,7 +35,7 @@ export function TeamSection() {
       <div className="absolute inset-0 bg-dot-pattern opacity-10" />
       <div className="section-container relative">
         <SectionHeader
-          tag="Our Team"
+          tag="团队介绍"
           title="跨学科精英团队，共筑科创梦想"
           subtitle="汇聚航空工程、智能控制、商业运营等多领域人才，以专业能力驱动项目落地"
         />
@@ -90,7 +90,7 @@ export function TeamSection() {
         <AnimatedEntry delay={200}>
           <h3 className="text-xl font-bold text-foreground mb-8 flex items-center gap-3">
             <Download className="w-5 h-5 text-primary" />
-            附件资源
+            项目资料
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-20">
             {RESOURCES.map((res, i) => (

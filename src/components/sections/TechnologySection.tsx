@@ -29,7 +29,7 @@ export function TechnologySection() {
       <div className="absolute inset-0 bg-dot-pattern opacity-10" />
       <div className="section-container relative">
         <SectionHeader
-          tag="Technology Route"
+          tag="技术路线"
           title="硬核技术壁垒，构筑竞争护城河"
           subtitle="从气动设计到飞控算法，从动力系统到智能货舱，全栈自研技术打造差异化竞争优势"
         />
@@ -71,6 +71,8 @@ export function TechnologySection() {
                   <img
                     src="/images/drone-main.png"
                     alt={SYSTEMS[activeSystem].label}
+                    loading="lazy"
+                    decoding="async"
                     className="max-w-[280px] w-full object-contain opacity-60 drop-shadow-[0_0_30px_rgba(0,229,255,0.1)]"
                   />
                 </div>

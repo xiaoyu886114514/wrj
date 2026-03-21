@@ -65,7 +65,7 @@ export function RoadmapSection() {
       <div className="absolute inset-0 bg-dot-pattern opacity-10" />
       <div className="section-container relative">
         <SectionHeader
-          tag="Development Plan"
+          tag="发展规划"
           title="从0到1，步步为营的落地路径"
           subtitle="清晰的阶段性目标与可量化的里程碑节点，确保项目稳步推进、有序落地"
         />

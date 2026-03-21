@@ -48,7 +48,7 @@ export function MarketSection() {
       <div className="absolute inset-0 bg-dot-pattern opacity-10" />
       <div className="section-container relative">
         <SectionHeader
-          tag="Market Demand"
+          tag="市场背景"
           title="政策红利驱动，万亿蓝海已至"
           subtitle="低空经济上升为国家战略，无人机物流成为低空经济核心赛道，市场需求爆发式增长"
         />

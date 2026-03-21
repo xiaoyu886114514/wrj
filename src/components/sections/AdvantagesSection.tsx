@@ -29,7 +29,7 @@ export function AdvantagesSection() {
       <div className="absolute inset-0 bg-grid-pattern opacity-10" />
       <div className="section-container relative">
         <SectionHeader
-          tag="Core Advantages"
+          tag="核心优势"
           title="垂直起降 + 固定翼，重新定义无人机物流"
           subtitle="融合垂直起降灵活性与固定翼高效巡航优势，打造适用于全域低空物流的最优技术方案"
         />
@@ -44,20 +44,22 @@ export function AdvantagesSection() {
                 <div className="absolute inset-[12%] rounded-full border border-primary/12" />
                 <div className="absolute inset-[20%] rounded-full border border-dashed border-primary/12 animate-radar-spin" />
                 <div className="absolute left-5 top-5 rounded-2xl border border-primary/16 bg-background/72 px-4 py-3 backdrop-blur-xl">
-                  <div className="hud-label text-[10px] text-primary">Airframe Blueprint</div>
+                  <div className="text-[10px] font-semibold tracking-[0.16em] text-primary">机体结构视图</div>
                   <div className="mt-2 text-xs text-muted-foreground">点击热点查看关键模块能力</div>
                 </div>
-                <div className="absolute right-5 top-5 rounded-2xl border border-primary/16 bg-background/72 px-4 py-3 text-right backdrop-blur-xl">
-                  <div className="hud-label text-[10px] text-muted-foreground">Flight Status</div>
+                <div className="absolute right-5 top-5 hidden rounded-2xl border border-primary/16 bg-background/72 px-4 py-3 text-right backdrop-blur-xl sm:block">
+                  <div className="text-[10px] font-semibold tracking-[0.16em] text-muted-foreground">飞行状态</div>
                   <div className="mt-2 flex items-center justify-end gap-2">
                     <span className="signal-dot" />
-                    <span className="font-display text-xs tracking-[0.18em] text-primary">ACTIVE</span>
+                    <span className="font-display text-xs tracking-[0.18em] text-primary">已激活</span>
                   </div>
                 </div>
 
                 <img
                   src="/images/drone-main.png"
-                  alt="VTOL固定翼无人机结构"
+                  alt="垂直起降固定翼无人机结构"
+                  loading="lazy"
+                  decoding="async"
                   className="relative z-10 h-full w-full object-contain drop-shadow-[0_0_48px_rgba(0,229,255,0.16)] animate-float-tilt"
                 />
 
@@ -73,7 +75,7 @@ export function AdvantagesSection() {
                     <span className={`relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 ${activePart === part.id ? 'bg-primary/16 border-primary text-primary shadow-[var(--shadow-glow-primary)]' : 'bg-background/72 border-primary/35 text-foreground/70 group-hover:border-primary/65 group-hover:text-primary'}`}>
                       <part.icon className="w-4 h-4" />
                     </span>
-                    <span className={`mt-2 block rounded-full border px-3 py-1 text-[10px] font-semibold tracking-[0.16em] transition-all duration-300 ${activePart === part.id ? 'border-primary/24 bg-primary/10 text-primary' : 'border-border/60 bg-background/68 text-muted-foreground group-hover:text-foreground'}`}>
+                    <span className={`mt-2 hidden rounded-full border px-3 py-1 text-[10px] font-semibold tracking-[0.16em] transition-all duration-300 sm:block ${activePart === part.id ? 'border-primary/24 bg-primary/10 text-primary' : 'border-border/60 bg-background/68 text-muted-foreground group-hover:text-foreground'}`}>
                       {part.label}
                     </span>
                   </button>
@@ -90,7 +92,7 @@ export function AdvantagesSection() {
                           <part.icon className="w-4 h-4 text-primary" />
                         </div>
                         <div>
-                          <div className="hud-label text-[10px] text-primary/70">System Focus</div>
+                          <div className="text-[10px] font-semibold tracking-[0.16em] text-primary/70">模块聚焦</div>
                           <h4 className="text-sm font-bold text-foreground">{part.label}</h4>
                         </div>
                       </div>
@@ -122,8 +124,8 @@ export function AdvantagesSection() {
                   onClick={() => setExpandedCard(expandedCard === i ? null : i)}
                 >
                   <div className="mb-4 flex items-center justify-between">
-                    <span className="hud-label text-[10px] text-primary/70">Advantage {String(i + 1).padStart(2, '0')}</span>
-                    {adv.highlight && <span className="rounded-full border border-accent/25 bg-accent/10 px-2 py-1 text-[10px] font-semibold text-accent">Flagship</span>}
+                    <span className="text-[10px] font-semibold tracking-[0.16em] text-primary/70">优势 {String(i + 1).padStart(2, '0')}</span>
+                    {adv.highlight && <span className="rounded-full border border-accent/25 bg-accent/10 px-2 py-1 text-[10px] font-semibold text-accent">核心能力</span>}
                   </div>
                   <div className="flex items-start gap-3">
                     <div>
