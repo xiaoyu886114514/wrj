@@ -4,11 +4,9 @@ import {
   ArrowDown,
   BatteryCharging,
   ChevronRight,
-  Cpu,
   Gauge,
   MapPinned,
   Navigation,
-  Package,
   Radar,
   Route,
   ShieldCheck,
@@ -45,47 +43,35 @@ const 首屏能力卡 = [
 const 系统节点 = [
   {
     id: '起降',
-    icon: Navigation,
     short: '垂直起降',
     title: '零跑道垂直起降系统',
-    desc: '四旋翼垂直起降与固定翼巡航无缝切换，大幅降低场地约束，适合偏远场景的快速部署。',
+    desc: '四旋翼垂直起降与固定翼巡航无缝切换，大幅降低场地约束，适合偏远场景快速部署。',
     value: '任意开阔地',
     meta: '部署能力',
-    x: '15%',
-    y: '34%',
   },
   {
     id: '动力',
-    icon: BatteryCharging,
     short: '混合动力',
     title: '油电混动长航时动力',
     desc: '兼顾 200km 航程与 15kg 级任务载荷，支撑低空物流从单次飞行走向持续运营。',
     value: '200km',
     meta: '任务半径',
-    x: '78%',
-    y: '24%',
   },
   {
     id: '货舱',
-    icon: Package,
     short: '智能货舱',
     title: '模块化智能货舱接口',
     desc: '支持标准物流箱、应急物资、样本运输等场景快速换舱，提升效率与任务切换能力。',
     value: '30秒换舱',
     meta: '运营效率',
-    x: '58%',
-    y: '74%',
   },
   {
     id: '飞控',
-    icon: Cpu,
     short: '自主飞控',
     title: '自主飞控与航线规划',
     desc: '融合北斗、GPS、惯导与视觉辅助，实现更稳的航迹保持、更强的环境适应和更高的安全冗余。',
     value: '双模导航',
     meta: '定位系统',
-    x: '35%',
-    y: '14%',
   },
 ]
 
@@ -142,7 +128,7 @@ export function HeroSection() {
                 让山区、海岛、乡村和应急场景具备真正可执行、可扩展、可运营的空中运输能力。
               </p>
               <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground lg:text-base">
-                这不是单一飞行器的展示页，而是一套围绕低空运输效率、可靠性和落地场景打造的产品化平台官网。
+                首屏视觉采用大疆运载无人机官方产品图作为行业形态参考，仅用于传达“专业运载平台”的气质，不再遮挡正文信息。
               </p>
             </div>
 
@@ -198,97 +184,57 @@ export function HeroSection() {
           <div className="relative mx-auto w-full max-w-[640px]">
             <div className="absolute inset-0 rounded-full bg-primary/8 blur-3xl animate-glow-shift" />
 
-            <div className="tech-frame relative aspect-[1/1.02] p-4 sm:p-6">
-              <div className="absolute inset-4 rounded-[1.7rem] border border-primary/10 sm:inset-6" />
-              <div className="absolute inset-[14%] rounded-full border border-primary/10" />
-              <div className="absolute inset-[22%] rounded-full border border-dashed border-primary/12 animate-radar-spin" />
-              <div className="absolute left-1/2 top-[44%] h-[58%] w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/10" />
-              <div className="scanner-line opacity-60" />
-
-              <div className="absolute left-4 top-4 max-w-[190px] rounded-2xl border border-primary/14 bg-background/72 px-3 py-3 backdrop-blur-xl sm:left-6 sm:top-6 sm:max-w-[210px] sm:px-4">
-                <div className="text-[10px] font-semibold tracking-[0.16em] text-primary">任务画像</div>
-                <p className="mt-2 text-xs leading-6 text-muted-foreground">
-                  面向偏远配送、紧急投送与复杂地形运输，强调部署效率与稳定运营能力。
-                </p>
-              </div>
-
-              <div className="absolute right-6 top-6 hidden rounded-2xl border border-primary/14 bg-background/72 px-4 py-3 text-right backdrop-blur-xl sm:block">
-                <div className="text-[10px] font-semibold tracking-[0.16em] text-muted-foreground">系统状态</div>
-                <div className="mt-2 flex items-center justify-end gap-2 text-primary">
-                  <span className="signal-dot" />
-                  <span className="font-display text-sm font-bold tracking-[0.16em]">在线运行</span>
+            <div className="tech-frame relative overflow-hidden p-5 sm:p-6">
+              <div className="absolute inset-5 rounded-[1.7rem] border border-primary/10 sm:inset-6" />
+              <div className="absolute inset-x-5 top-5 flex items-center justify-between sm:inset-x-6 sm:top-6">
+                <div className="rounded-full border border-primary/14 bg-background/72 px-3 py-1.5 text-[10px] font-semibold tracking-[0.16em] text-primary">
+                  大疆官方运载无人机形态参考
                 </div>
-                <div className="mt-2 text-xs text-muted-foreground">导航、避障、任务链路已联通</div>
+                <div className="hidden rounded-full border border-primary/14 bg-background/72 px-3 py-1.5 text-[10px] font-semibold tracking-[0.16em] text-muted-foreground sm:block">
+                  DJI FlyCart 30
+                </div>
               </div>
 
-              <div className="absolute left-1/2 top-[46%] w-[78%] -translate-x-1/2 -translate-y-1/2">
+              <div className="relative flex min-h-[420px] items-center justify-center pt-16 sm:min-h-[480px] sm:pt-20">
+                <div className="absolute inset-[18%] rounded-full border border-primary/10" />
+                <div className="absolute inset-[28%] rounded-full border border-dashed border-primary/12 animate-radar-spin" />
+                <div className="scanner-line opacity-60" />
                 <img
-                  src="/images/drone-main.png"
-                  alt="垂直起降固定翼无人机"
+                  src="/images/dji-flycart30.png"
+                  alt="大疆运载无人机官方参考图"
                   fetchPriority="high"
-                  className="w-full object-contain drop-shadow-[0_0_42px_rgba(0,229,255,0.18)] animate-float-tilt"
+                  className="relative z-10 max-h-[300px] w-full max-w-[520px] object-contain drop-shadow-[0_0_40px_rgba(0,229,255,0.18)] animate-float-tilt sm:max-h-[360px]"
                 />
               </div>
+            </div>
 
+            <div className="mt-5 grid grid-cols-2 gap-3">
               {系统节点.map(item => (
                 <button
                   key={item.id}
                   onClick={() => setActiveSystem(item)}
-                  className="group absolute hidden -translate-x-1/2 -translate-y-1/2 lg:block"
-                  style={{ left: item.x, top: item.y }}
+                  className={`rounded-2xl border px-4 py-3 text-left text-sm transition-all ${
+                    activeSystem.id === item.id
+                      ? 'border-primary/28 bg-primary/10 text-primary shadow-[var(--shadow-glow-primary)]'
+                      : 'border-border/70 bg-background/60 text-muted-foreground hover:border-primary/16 hover:text-foreground'
+                  }`}
                 >
-                  <div className="relative">
-                    <span className={`absolute inset-0 rounded-full ${activeSystem.id === item.id ? 'bg-primary/20 animate-ping' : 'opacity-0 group-hover:opacity-100'} transition-opacity`} />
-                    <span
-                      className={`relative flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-300 ${
-                        activeSystem.id === item.id
-                          ? 'border-primary bg-primary/18 text-primary shadow-[var(--shadow-glow-primary)]'
-                          : 'border-primary/30 bg-background/72 text-foreground/75 group-hover:border-primary/60 group-hover:text-primary'
-                      }`}
-                    >
-                      <item.icon className="h-5 w-5" />
-                    </span>
-                  </div>
-                  <span
-                    className={`mt-2 block rounded-full border px-3 py-1 text-[10px] font-semibold tracking-[0.14em] transition-all duration-300 ${
-                      activeSystem.id === item.id
-                        ? 'border-primary/24 bg-primary/10 text-primary'
-                        : 'border-border/60 bg-background/72 text-muted-foreground group-hover:text-foreground'
-                    }`}
-                  >
-                    {item.short}
-                  </span>
+                  {item.short}
                 </button>
               ))}
+            </div>
 
-              <div className="absolute bottom-4 left-4 right-4 hud-panel p-4 sm:bottom-6 sm:left-6 sm:right-6 sm:p-5">
-                <div className="mb-4 grid grid-cols-2 gap-2 lg:hidden">
-                  {系统节点.map(item => (
-                    <button
-                      key={item.id}
-                      onClick={() => setActiveSystem(item)}
-                      className={`rounded-2xl border px-3 py-2 text-left text-xs transition-all ${
-                        activeSystem.id === item.id
-                          ? 'border-primary/24 bg-primary/10 text-primary'
-                          : 'border-border/60 bg-background/65 text-muted-foreground'
-                      }`}
-                    >
-                      {item.short}
-                    </button>
-                  ))}
+            <div className="mt-4 hud-panel p-5">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <div className="text-[10px] font-semibold tracking-[0.16em] text-primary/80">系统焦点</div>
+                  <h3 className="mt-2 text-lg font-semibold text-foreground sm:text-xl">{activeSystem.title}</h3>
+                  <p className="mt-2 max-w-xl text-sm leading-7 text-muted-foreground">{activeSystem.desc}</p>
                 </div>
-
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <div className="text-[10px] font-semibold tracking-[0.16em] text-primary/80">系统焦点</div>
-                    <h3 className="mt-2 text-lg font-semibold text-foreground sm:text-xl">{activeSystem.title}</h3>
-                    <p className="mt-2 max-w-xl text-sm leading-7 text-muted-foreground">{activeSystem.desc}</p>
-                  </div>
-                  <div className="min-w-[136px] rounded-2xl border border-primary/14 bg-background/55 px-4 py-3 text-right">
-                    <div className="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground">{activeSystem.meta}</div>
-                    <div className="mt-2 font-display text-base font-bold tracking-[0.12em] text-primary sm:text-lg">
-                      {activeSystem.value}
-                    </div>
+                <div className="min-w-[136px] rounded-2xl border border-primary/14 bg-background/55 px-4 py-3 text-right">
+                  <div className="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground">{activeSystem.meta}</div>
+                  <div className="mt-2 font-display text-base font-bold tracking-[0.12em] text-primary sm:text-lg">
+                    {activeSystem.value}
                   </div>
                 </div>
               </div>

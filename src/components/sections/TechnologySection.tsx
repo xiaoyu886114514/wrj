@@ -67,14 +67,17 @@ export function TechnologySection() {
                     ))}
                   </div>
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="flex flex-col items-center justify-center">
                   <img
-                    src="/images/drone-main.png"
-                    alt={SYSTEMS[activeSystem].label}
+                    src="/images/dji-flycart30.png"
+                    alt="大疆运载无人机官方参考图"
                     loading="lazy"
                     decoding="async"
-                    className="max-w-[280px] w-full object-contain opacity-60 drop-shadow-[0_0_30px_rgba(0,229,255,0.1)]"
+                    className="max-w-[320px] w-full object-contain opacity-80 drop-shadow-[0_0_30px_rgba(0,229,255,0.1)]"
                   />
+                  <div className="mt-4 text-center text-[11px] text-muted-foreground/80">
+                    行业运载无人机视觉参考
+                  </div>
                 </div>
               </div>
             </MetalCard>
