@@ -17,8 +17,8 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: ['"PingFang SC"', '"Microsoft YaHei"', '"Noto Sans SC"', '"Segoe UI"', 'sans-serif'],
-        display: ['Bahnschrift', '"Segoe UI"', '"PingFang SC"', '"Microsoft YaHei"', 'sans-serif'],
+        sans: ['"PingFang SC"', '"Microsoft YaHei UI"', '"Noto Sans SC"', '"Segoe UI"', 'sans-serif'],
+        display: ['"Segoe UI Variable Display"', '"PingFang SC"', '"Microsoft YaHei UI"', '"Noto Sans SC"', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

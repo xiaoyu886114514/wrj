@@ -30,8 +30,8 @@ export function TechnologySection() {
       <div className="section-container relative">
         <SectionHeader
           tag="技术路线"
-          title="硬核技术壁垒，构筑竞争护城河"
-          subtitle="从气动设计到飞控算法，从动力系统到智能货舱，全栈自研技术打造差异化竞争优势"
+          title="从机体到飞控的全链路技术方案"
+          subtitle="从气动设计到飞控算法，从动力系统到智能货舱，以系统集成方式构建可验证、可演进的平台能力"
         />
 
         {/* System exploded view */}
@@ -41,8 +41,9 @@ export function TechnologySection() {
               {SYSTEMS.map((sys, i) => (
                 <button
                   key={i}
+                  type="button"
                   onClick={() => setActiveSystem(i)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium transition-all duration-300 ${activeSystem === i ? 'bg-primary/20 text-primary border border-primary/30 shadow-[var(--shadow-glow-primary)]' : 'bg-muted/50 text-muted-foreground border border-border hover:text-foreground hover:border-border'}`}
+                  className={`focus-ring flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium transition-all duration-300 ${activeSystem === i ? 'bg-primary/20 text-primary border border-primary/30 shadow-[var(--shadow-glow-primary)]' : 'bg-muted/50 text-muted-foreground border border-border hover:text-foreground hover:border-border'}`}
                 >
                   <sys.icon className="w-4 h-4" />
                   {sys.label}

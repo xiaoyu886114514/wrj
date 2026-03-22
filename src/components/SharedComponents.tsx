@@ -7,10 +7,19 @@ interface SectionHeaderProps {
   subtitle?: string
   className?: string
   align?: 'left' | 'center'
+  variant?: 'default' | 'minimal'
 }
 
-export function SectionHeader({ tag, title, subtitle, className, align = 'center' }: SectionHeaderProps) {
+export function SectionHeader({
+  tag,
+  title,
+  subtitle,
+  className,
+  align = 'center',
+  variant = 'default',
+}: SectionHeaderProps) {
   const { ref, isInView } = useInView()
+  const isMinimal = variant === 'minimal'
 
   return (
     <div
@@ -22,15 +31,26 @@ export function SectionHeader({ tag, title, subtitle, className, align = 'center
         className
       )}
     >
-      <div className={cn('mb-6 flex items-center gap-4', align === 'center' ? 'justify-center' : 'justify-start')}>
-        <span className="trail-line h-px w-12 opacity-80" />
+      <div
+        className={cn(
+          'mb-6 flex items-center gap-4',
+          align === 'center' ? 'justify-center' : 'justify-start',
+          isMinimal && 'mb-4 gap-3'
+        )}
+      >
+        {!isMinimal && <span className="trail-line h-px w-12 opacity-80" />}
         <span className="inline-flex items-center gap-2 rounded-full border border-primary/24 bg-primary/8 px-4 py-2 text-[11px] font-semibold text-primary">
           <span className="signal-dot" />
           <span className="hud-label">{tag}</span>
         </span>
-        <span className="trail-line h-px w-12 opacity-50" />
+        <span className={cn('trail-line h-px opacity-50', isMinimal ? 'w-16' : 'w-12')} />
       </div>
-      <h2 className="font-display text-3xl font-bold tracking-[0.08em] text-foreground leading-tight lg:text-4xl xl:text-5xl">
+      <h2
+        className={cn(
+          'font-display text-3xl font-bold tracking-[0.08em] text-foreground leading-tight lg:text-4xl xl:text-5xl',
+          isMinimal && 'max-w-4xl tracking-[0.05em]'
+        )}
+      >
         {title}
       </h2>
       {subtitle && (
@@ -43,11 +63,13 @@ export function SectionHeader({ tag, title, subtitle, className, align = 'center
           {subtitle}
         </p>
       )}
-      <div className={cn('mt-8 flex items-center gap-3', align === 'center' ? 'justify-center' : 'justify-start')}>
-        <span className="h-px w-16 bg-primary/70" />
-        <span className="h-2 w-2 rounded-full bg-primary shadow-[var(--shadow-glow-primary)]" />
-        <span className="h-px w-10 bg-accent/50" />
-      </div>
+      {!isMinimal && (
+        <div className={cn('mt-8 flex items-center gap-3', align === 'center' ? 'justify-center' : 'justify-start')}>
+          <span className="h-px w-16 bg-primary/70" />
+          <span className="h-2 w-2 rounded-full bg-primary shadow-[var(--shadow-glow-primary)]" />
+          <span className="h-px w-10 bg-accent/50" />
+        </div>
+      )}
     </div>
   )
 }

@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 
-export function useInView(threshold = 0.15) {
+interface UseInViewOptions {
+  threshold?: number
+  rootMargin?: string
+}
+
+export function useInView(options: number | UseInViewOptions = 0.15) {
+  const threshold = typeof options === 'number' ? options : options.threshold ?? 0.15
+  const rootMargin = typeof options === 'number' ? '0px' : options.rootMargin ?? '0px'
   const ref = useRef<HTMLDivElement>(null)
   const [isInView, setIsInView] = useState(false)
 
@@ -15,11 +22,11 @@ export function useInView(threshold = 0.15) {
           observer.unobserve(el)
         }
       },
-      { threshold }
+      { threshold, rootMargin }
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [threshold])
+  }, [rootMargin, threshold])
 
   return { ref, isInView }
 }
@@ -49,15 +56,25 @@ export function useCountUp(end: number, duration = 2000, startOnView = true) {
 
   useEffect(() => {
     if (!started) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setCount(end)
+      return
+    }
+
     let startTime: number
+    let frameId = 0
     const step = (timestamp: number) => {
       if (!startTime) startTime = timestamp
       const progress = Math.min((timestamp - startTime) / duration, 1)
       const eased = 1 - Math.pow(1 - progress, 3)
       setCount(Math.floor(eased * end))
-      if (progress < 1) requestAnimationFrame(step)
+      if (progress < 1) {
+        frameId = requestAnimationFrame(step)
+      }
     }
-    requestAnimationFrame(step)
+    frameId = requestAnimationFrame(step)
+
+    return () => cancelAnimationFrame(frameId)
   }, [started, end, duration])
 
   return { count, ref }

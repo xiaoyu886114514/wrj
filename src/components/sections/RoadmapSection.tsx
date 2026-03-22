@@ -81,8 +81,9 @@ export function RoadmapSection() {
                 {PHASES.map((phase, i) => (
                   <button
                     key={i}
+                    type="button"
                     onClick={() => setActivePhase(i)}
-                    className={`relative flex items-start gap-5 mb-8 last:mb-0 w-full text-left group transition-all duration-300 ${activePhase === i ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                    className={`focus-ring relative flex items-start gap-5 mb-8 last:mb-0 w-full text-left group transition-all duration-300 ${activePhase === i ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
                   >
                     {/* Node */}
                     <div className={`relative z-10 w-10 h-10 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-300 ${activePhase === i ? 'border-primary bg-primary/20 shadow-[var(--shadow-glow-primary)]' : 'border-border bg-card'}`}>

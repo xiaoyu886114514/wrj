@@ -113,9 +113,11 @@ export function FinanceSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {RISKS.map((risk, i) => (
               <AnimatedEntry key={i} delay={i * 80}>
-                <GlassCard
-                  className={`cursor-pointer h-full transition-all duration-300 ${activeRisk === i ? 'border-primary/40' : ''}`}
+                <button
+                  type="button"
+                  aria-expanded={activeRisk === i}
                   onClick={() => setActiveRisk(activeRisk === i ? null : i)}
+                  className={`focus-ring glass-card h-full w-full cursor-pointer p-6 text-left transition-all duration-300 ${activeRisk === i ? 'border-primary/40' : ''}`}
                 >
                   <div className="flex items-start gap-3 mb-3">
                     <div className="w-9 h-9 rounded-lg bg-muted/50 border border-border flex items-center justify-center flex-shrink-0">
@@ -142,7 +144,7 @@ export function FinanceSection() {
                       ))}
                     </div>
                   )}
-                </GlassCard>
+                </button>
               </AnimatedEntry>
             ))}
           </div>

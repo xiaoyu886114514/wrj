@@ -1,25 +1,59 @@
+import { Suspense, lazy } from 'react'
+import type { ComponentType, LazyExoticComponent } from 'react'
 import { ParticleBackground } from '@/components/ParticleBackground'
 import { Navbar } from '@/components/Navbar'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { MarketSection } from '@/components/sections/MarketSection'
 import { AdvantagesSection } from '@/components/sections/AdvantagesSection'
-import { TechnologySection } from '@/components/sections/TechnologySection'
-import { BusinessSection } from '@/components/sections/BusinessSection'
-import { RoadmapSection } from '@/components/sections/RoadmapSection'
-import { FinanceSection } from '@/components/sections/FinanceSection'
-import { SocialValueSection } from '@/components/sections/SocialValueSection'
-import { TeamSection } from '@/components/sections/TeamSection'
 import { Footer } from '@/components/sections/Footer'
+import { useInView } from '@/hooks/useAnimations'
+
+const TechnologySection = lazy(() => import('@/components/sections/TechnologySection').then(module => ({ default: module.TechnologySection })))
+const BusinessSection = lazy(() => import('@/components/sections/BusinessSection').then(module => ({ default: module.BusinessSection })))
+const RoadmapSection = lazy(() => import('@/components/sections/RoadmapSection').then(module => ({ default: module.RoadmapSection })))
+const FinanceSection = lazy(() => import('@/components/sections/FinanceSection').then(module => ({ default: module.FinanceSection })))
+const SocialValueSection = lazy(() => import('@/components/sections/SocialValueSection').then(module => ({ default: module.SocialValueSection })))
+const TeamSection = lazy(() => import('@/components/sections/TeamSection').then(module => ({ default: module.TeamSection })))
+
+interface DeferredSectionProps {
+  id: string
+  divider?: boolean
+  component: LazyExoticComponent<ComponentType>
+}
+
+function SectionFallback({ id }: { id: string }) {
+  return (
+    <section id={id} className="section-padding relative">
+      <div className="section-container">
+        <div className="h-24 rounded-[1.5rem] border border-primary/10 bg-background/30 backdrop-blur-sm sm:h-28" />
+      </div>
+    </section>
+  )
+}
+
+function DeferredSection({ id, divider = true, component: Component }: DeferredSectionProps) {
+  const { ref, isInView } = useInView({ threshold: 0, rootMargin: '480px 0px' })
+
+  return (
+    <>
+      <div ref={ref}>
+        <Suspense fallback={<SectionFallback id={id} />}>
+          {isInView ? <Component /> : <SectionFallback id={id} />}
+        </Suspense>
+      </div>
+      {divider && <div className="section-divider" />}
+    </>
+  )
+}
 
 function App() {
   return (
     <div className="tech-shell min-h-screen bg-background text-foreground">
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute inset-0 tech-noise" />
-        <div className="absolute inset-0 hero-mesh opacity-30" />
-        <div className="absolute -top-32 left-[8%] h-80 w-80 rounded-full bg-primary/18 blur-3xl animate-glow-shift" />
-        <div className="absolute top-[18%] right-[6%] h-72 w-72 rounded-full bg-accent/12 blur-3xl animate-glow-shift" />
-        <div className="absolute bottom-[8%] left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/8 blur-3xl" />
+        <div className="absolute inset-0 hero-mesh opacity-20" />
+        <div className="absolute right-[8%] top-[14%] h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute bottom-[10%] left-[14%] h-56 w-56 rounded-full bg-accent/8 blur-3xl" />
       </div>
       <ParticleBackground />
       <Navbar />
@@ -30,17 +64,12 @@ function App() {
         <div className="section-divider" />
         <AdvantagesSection />
         <div className="section-divider" />
-        <TechnologySection />
-        <div className="section-divider" />
-        <BusinessSection />
-        <div className="section-divider" />
-        <RoadmapSection />
-        <div className="section-divider" />
-        <FinanceSection />
-        <div className="section-divider" />
-        <SocialValueSection />
-        <div className="section-divider" />
-        <TeamSection />
+        <DeferredSection id="technology" component={TechnologySection} />
+        <DeferredSection id="business" component={BusinessSection} />
+        <DeferredSection id="roadmap" component={RoadmapSection} />
+        <DeferredSection id="finance" component={FinanceSection} />
+        <DeferredSection id="social" component={SocialValueSection} divider={false} />
+        <DeferredSection id="team" component={TeamSection} divider={false} />
       </main>
       <Footer />
     </div>

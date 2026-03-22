@@ -7,7 +7,7 @@ const SCENARIOS = [
     id: 'rural',
     icon: Sprout,
     title: '乡村振兴·农产品上行',
-    image: '/images/scene-rural.png',
+    image: '/images/scene-rural.webp',
     desc: '为偏远山区农村提供农产品快速外运通道，将新鲜农产品从田间地头直达城市集散中心，破解农产品上行「最初一公里」难题',
     stats: [
       { label: '运输时效提升', value: '300%' },
@@ -19,7 +19,7 @@ const SCENARIOS = [
     id: 'emergency',
     icon: HeartPulse,
     title: '应急救援·物资运输',
-    image: '/images/scene-emergency.png',
+    image: '/images/scene-emergency.webp',
     desc: '自然灾害、疫情等突发事件中，当地面交通中断时，通过无人机空中通道实现应急物资精准投送，打通生命救援通道',
     stats: [
       { label: '响应时间', value: '<30min' },
@@ -31,7 +31,7 @@ const SCENARIOS = [
     id: 'island',
     icon: Ship,
     title: '海岛补给·偏远配送',
-    image: '/images/scene-island.png',
+    image: '/images/scene-island.webp',
     desc: '为海岛、边境哨所等传统物流难以覆盖的偏远区域提供定期与应急补给服务，实现全域物流无死角覆盖',
     stats: [
       { label: '跨海距离', value: '50km+' },
@@ -43,7 +43,7 @@ const SCENARIOS = [
     id: 'city',
     icon: Truck,
     title: '城市场景·极速配送',
-    image: '/images/scene-city.png',
+    image: '/images/scene-city.webp',
     desc: '城市医疗样本、紧急文件、高价值小件等特殊场景的点对点极速空中配送，绕过地面交通拥堵',
     stats: [
       { label: '配送时效', value: '15min' },
@@ -111,8 +111,9 @@ export function BusinessSection() {
             {SCENARIOS.map((scene, i) => (
               <button
                 key={scene.id}
+                type="button"
                 onClick={() => setActiveScene(i)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium transition-all duration-300 ${activeScene === i ? 'bg-accent/20 text-accent border border-accent/30' : 'bg-muted/50 text-muted-foreground border border-border hover:text-foreground'}`}
+                className={`focus-ring flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium transition-all duration-300 ${activeScene === i ? 'bg-accent/20 text-accent border border-accent/30' : 'bg-muted/50 text-muted-foreground border border-border hover:text-foreground'}`}
               >
                 <scene.icon className="w-4 h-4" />
                 {scene.title.split('·')[0]}

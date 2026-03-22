@@ -90,7 +90,7 @@ export function HeroSection() {
 
   return (
     <section id="hero" className="relative flex min-h-screen items-center overflow-hidden pb-14 pt-28 sm:pt-32 lg:pt-36">
-      <div className="absolute inset-0 bg-grid-pattern opacity-[0.06]" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.04]" />
       <div className="absolute inset-0" style={{ background: 'var(--gradient-hero)' }} />
       <div className="absolute inset-x-0 top-0 h-px bg-primary/20" />
       <div className="absolute left-[10%] top-[16%] h-40 w-40 rounded-full bg-primary/10 blur-3xl sm:h-56 sm:w-56" />
@@ -182,7 +182,7 @@ export function HeroSection() {
           </div>
 
           <div className="relative mx-auto w-full max-w-[640px]">
-            <div className="absolute inset-0 rounded-full bg-primary/8 blur-3xl animate-glow-shift" />
+            <div className="absolute inset-0 rounded-full bg-primary/6 blur-3xl" />
 
             <div className="tech-frame relative overflow-hidden p-5 sm:p-6">
               <div className="absolute inset-5 rounded-[1.7rem] border border-primary/10 sm:inset-6" />
@@ -197,13 +197,12 @@ export function HeroSection() {
 
               <div className="relative flex min-h-[420px] items-center justify-center pt-16 sm:min-h-[480px] sm:pt-20">
                 <div className="absolute inset-[18%] rounded-full border border-primary/10" />
-                <div className="absolute inset-[28%] rounded-full border border-dashed border-primary/12 animate-radar-spin" />
-                <div className="scanner-line opacity-60" />
+                <div className="absolute inset-[28%] rounded-full border border-primary/8" />
                 <img
                   src="/images/dji-flycart30.png"
                   alt="大疆运载无人机官方参考图"
                   fetchPriority="high"
-                  className="relative z-10 max-h-[300px] w-full max-w-[520px] object-contain drop-shadow-[0_0_40px_rgba(0,229,255,0.18)] animate-float-tilt sm:max-h-[360px]"
+                  className="relative z-10 max-h-[300px] w-full max-w-[520px] object-contain drop-shadow-[0_0_40px_rgba(0,229,255,0.18)] sm:max-h-[360px]"
                 />
               </div>
             </div>
@@ -212,8 +211,9 @@ export function HeroSection() {
               {系统节点.map(item => (
                 <button
                   key={item.id}
+                  type="button"
                   onClick={() => setActiveSystem(item)}
-                  className={`rounded-2xl border px-4 py-3 text-left text-sm transition-all ${
+                  className={`focus-ring rounded-2xl border px-4 py-3 text-left text-sm transition-all ${
                     activeSystem.id === item.id
                       ? 'border-primary/28 bg-primary/10 text-primary shadow-[var(--shadow-glow-primary)]'
                       : 'border-border/70 bg-background/60 text-muted-foreground hover:border-primary/16 hover:text-foreground'
@@ -256,8 +256,9 @@ export function HeroSection() {
 
         <div className="mt-12 flex justify-center">
           <button
+            type="button"
             onClick={() => scrollTo('market')}
-            className="group flex flex-col items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
+            className="focus-ring group flex flex-col items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
           >
             <span className="text-[10px] font-semibold tracking-[0.18em]">继续查看项目全貌</span>
             <div className="flex h-11 w-11 items-center justify-center rounded-full border border-primary/18 bg-primary/6">

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SectionHeader, GlassCard, AnimatedEntry, DataBadge } from '@/components/SharedComponents'
+import { SectionHeader, AnimatedEntry, DataBadge } from '@/components/SharedComponents'
 import { Box, Cpu, Gauge, Navigation, Shield, Zap } from 'lucide-react'
 
 const 能力模块 = [
@@ -60,8 +60,8 @@ export function AdvantagesSection() {
       <div className="section-container relative">
         <SectionHeader
           tag="核心优势"
-          title="垂直起降 + 固定翼，重新定义无人机物流"
-          subtitle="融合垂直起降灵活性与固定翼高效巡航优势，打造适用于全域低空物流的最优技术方案"
+          title="垂直起降与固定翼巡航的协同方案"
+          subtitle="兼顾部署灵活性、巡航效率与载荷能力，面向真实低空运输任务构建平台级运力底座"
         />
 
         <AnimatedEntry>
@@ -82,8 +82,9 @@ export function AdvantagesSection() {
                   {能力模块.map(item => (
                     <button
                       key={item.id}
+                      type="button"
                       onClick={() => setActivePart(item)}
-                      className={`rounded-2xl border p-4 text-left transition-all ${
+                      className={`focus-ring rounded-2xl border p-4 text-left transition-all ${
                         activePart.id === item.id
                           ? 'border-primary/26 bg-primary/10 text-primary shadow-[var(--shadow-glow-primary)]'
                           : 'border-border/70 bg-background/55 text-muted-foreground hover:border-primary/16 hover:text-foreground'
@@ -124,10 +125,12 @@ export function AdvantagesSection() {
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {核心优势.map((adv, i) => (
-                <GlassCard
+                <button
                   key={i}
-                  className={`cursor-pointer transition-all duration-300 ${expandedCard === i ? 'sm:col-span-2 border-primary/30' : ''} ${adv.highlight ? 'border-primary/20' : ''}`}
+                  type="button"
+                  aria-expanded={expandedCard === i}
                   onClick={() => setExpandedCard(expandedCard === i ? null : i)}
+                  className={`focus-ring glass-card cursor-pointer p-6 text-left transition-all duration-300 ${expandedCard === i ? 'sm:col-span-2 border-primary/30' : ''} ${adv.highlight ? 'border-primary/20' : ''}`}
                 >
                   <div className="mb-4 flex items-center justify-between">
                     <span className="text-[10px] font-semibold tracking-[0.16em] text-primary/70">优势 {String(i + 1).padStart(2, '0')}</span>
@@ -137,7 +140,7 @@ export function AdvantagesSection() {
                   <p className={`text-xs leading-relaxed text-muted-foreground transition-all duration-300 ${expandedCard === i ? 'line-clamp-none' : 'line-clamp-2'}`}>
                     {adv.desc}
                   </p>
-                </GlassCard>
+                </button>
               ))}
             </div>
           </div>

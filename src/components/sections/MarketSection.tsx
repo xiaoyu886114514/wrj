@@ -49,8 +49,8 @@ export function MarketSection() {
       <div className="section-container relative">
         <SectionHeader
           tag="市场背景"
-          title="政策红利驱动，万亿蓝海已至"
-          subtitle="低空经济上升为国家战略，无人机物流成为低空经济核心赛道，市场需求爆发式增长"
+          title="政策窗口打开，低空物流进入加速验证期"
+          subtitle="低空经济政策、地方试点与场景需求同步推进，为无人机物流提供更清晰的发展窗口与验证土壤"
         />
 
         {/* Market data cards */}
@@ -105,8 +105,9 @@ export function MarketSection() {
                 {POLICIES.map((policy, i) => (
                   <button
                     key={i}
+                    type="button"
                     onClick={() => setActivePolicy(i)}
-                    className={`relative flex items-start gap-6 mb-6 w-full text-left group transition-all duration-300 ${activePolicy === i ? 'opacity-100' : 'opacity-50 hover:opacity-75'}`}
+                    className={`focus-ring relative flex items-start gap-6 mb-6 w-full text-left group transition-all duration-300 ${activePolicy === i ? 'opacity-100' : 'opacity-50 hover:opacity-75'}`}
                   >
                     <div className={`relative z-10 w-8 h-8 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-300 ${activePolicy === i ? 'border-primary bg-primary/20 shadow-[var(--shadow-glow-primary)]' : 'border-border bg-muted'}`}>
                       <div className={`w-2 h-2 rounded-full transition-all duration-300 ${activePolicy === i ? 'bg-primary' : 'bg-muted-foreground/30'}`} />
