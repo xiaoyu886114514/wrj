@@ -25,7 +25,18 @@ function SectionFallback({ id }: { id: string }) {
   return (
     <section id={id} className="section-padding relative">
       <div className="section-container">
-        <div className="h-24 rounded-[1.5rem] border border-primary/10 bg-background/30 backdrop-blur-sm sm:h-28" />
+        <div className="min-h-[50vh] space-y-6">
+          <div className="mx-auto flex flex-col items-center gap-4">
+            <div className="h-8 w-32 animate-pulse rounded-full bg-primary/8" />
+            <div className="h-10 w-80 animate-pulse rounded-lg bg-muted/40" />
+            <div className="h-5 w-64 animate-pulse rounded-lg bg-muted/30" />
+          </div>
+          <div className="grid grid-cols-1 gap-6 pt-8 md:grid-cols-3">
+            <div className="h-40 animate-pulse rounded-[var(--radius)] border border-primary/6 bg-muted/20" />
+            <div className="h-40 animate-pulse rounded-[var(--radius)] border border-primary/6 bg-muted/20 animate-delay-200" />
+            <div className="hidden h-40 animate-pulse rounded-[var(--radius)] border border-primary/6 bg-muted/20 animate-delay-400 md:block" />
+          </div>
+        </div>
       </div>
     </section>
   )

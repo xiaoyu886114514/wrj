@@ -143,7 +143,7 @@ export function TeamSection() {
                     className="focus-ring glass-card group block h-full p-6"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 transition-colors group-hover:bg-primary/20">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 transition-colors group-hover:bg-primary/20">
                         <Icon className="h-5 w-5 text-primary" />
                       </div>
                       <div className="min-w-0 flex-1">

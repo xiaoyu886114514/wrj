@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SectionHeader, GlassCard, AnimatedEntry, MetalCard } from '@/components/SharedComponents'
+import { SectionHeader, GlassCard, AnimatedEntry, MetalCard, TabGroup } from '@/components/SharedComponents'
 import { useCountUp } from '@/hooks/useAnimations'
 import { Layers, Cpu, Zap, Box, ShieldCheck, Milestone } from 'lucide-react'
 
@@ -37,25 +37,18 @@ export function TechnologySection() {
         {/* System exploded view */}
         <AnimatedEntry>
           <div className="mb-20">
-            <div className="flex flex-wrap gap-3 mb-8 justify-center">
-              {SYSTEMS.map((sys, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setActiveSystem(i)}
-                  className={`focus-ring flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium transition-all duration-300 ${activeSystem === i ? 'bg-primary/20 text-primary border border-primary/30 shadow-[var(--shadow-glow-primary)]' : 'bg-muted/50 text-muted-foreground border border-border hover:text-foreground hover:border-border'}`}
-                >
-                  <sys.icon className="w-4 h-4" />
-                  {sys.label}
-                </button>
-              ))}
-            </div>
+            <TabGroup
+              items={SYSTEMS.map(s => ({ icon: s.icon, label: s.label }))}
+              activeIndex={activeSystem}
+              onChange={setActiveSystem}
+              className="mb-8 justify-center"
+            />
 
             <MetalCard className="p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div>
                   <div className="flex items-center gap-3 mb-4">
-                    {(() => { const Icon = SYSTEMS[activeSystem].icon; return <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center"><Icon className="w-5 h-5 text-primary" /></div> })()}
+                    {(() => { const Icon = SYSTEMS[activeSystem].icon; return <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center"><Icon className="w-5 h-5 text-primary" /></div> })()}
                     <h3 className="text-xl font-bold text-foreground">{SYSTEMS[activeSystem].label}</h3>
                   </div>
                   <p className="text-sm text-muted-foreground leading-relaxed mb-6">{SYSTEMS[activeSystem].desc}</p>

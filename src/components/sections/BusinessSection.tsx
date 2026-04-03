@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SectionHeader, GlassCard, AnimatedEntry, MetalCard } from '@/components/SharedComponents'
+import { SectionHeader, GlassCard, AnimatedEntry, MetalCard, TabGroup } from '@/components/SharedComponents'
 import { Sprout, HeartPulse, Ship, Truck, Users, CircleDollarSign, Handshake, Building } from 'lucide-react'
 
 const SCENARIOS = [
@@ -80,7 +80,7 @@ export function BusinessSection() {
               <AnimatedEntry key={i} delay={i * 100}>
                 <MetalCard className="p-6 h-full">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
                       <model.icon className="w-5 h-5 text-primary" />
                     </div>
                     <h4 className="text-sm font-bold text-foreground">{model.title}</h4>
@@ -107,19 +107,13 @@ export function BusinessSection() {
           </h3>
 
           {/* Scene tabs */}
-          <div className="flex flex-wrap gap-3 mb-8">
-            {SCENARIOS.map((scene, i) => (
-              <button
-                key={scene.id}
-                type="button"
-                onClick={() => setActiveScene(i)}
-                className={`focus-ring flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium transition-all duration-300 ${activeScene === i ? 'bg-accent/20 text-accent border border-accent/30' : 'bg-muted/50 text-muted-foreground border border-border hover:text-foreground'}`}
-              >
-                <scene.icon className="w-4 h-4" />
-                {scene.title.split('·')[0]}
-              </button>
-            ))}
-          </div>
+          <TabGroup
+            items={SCENARIOS.map(s => ({ icon: s.icon, label: s.title.split('·')[0] }))}
+            activeIndex={activeScene}
+            onChange={setActiveScene}
+            accent="accent"
+            className="mb-8"
+          />
 
           {/* Active scene detail */}
           <GlassCard className="overflow-hidden">
@@ -136,7 +130,7 @@ export function BusinessSection() {
               </div>
               <div className="p-8 flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-4">
-                  {(() => { const Icon = SCENARIOS[activeScene].icon; return <div className="w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center"><Icon className="w-5 h-5 text-accent" /></div> })()}
+                  {(() => { const Icon = SCENARIOS[activeScene].icon; return <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center"><Icon className="w-5 h-5 text-accent" /></div> })()}
                   <h4 className="text-lg font-bold text-foreground">{SCENARIOS[activeScene].title}</h4>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-6">{SCENARIOS[activeScene].desc}</p>

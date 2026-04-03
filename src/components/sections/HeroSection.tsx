@@ -170,7 +170,7 @@ export function HeroSection() {
                   style={{ animationDelay: `${780 + index * 120}ms` }}
                 >
                   <div className="mb-3 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/20 bg-primary/10">
                       <card.icon className="h-5 w-5 text-primary" />
                     </div>
                     <div className="text-sm font-semibold text-foreground">{card.title}</div>

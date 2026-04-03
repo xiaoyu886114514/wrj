@@ -68,7 +68,7 @@ function StatCounter({ end, unit }: { end: number; unit: string }) {
 export function SocialValueSection() {
   return (
     <section id="social" className="section-padding relative">
-      <div className="absolute inset-0 bg-dot-pattern opacity-[0.08]" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.08]" />
       <div className="section-container relative">
         <SectionHeader
           tag="社会价值"

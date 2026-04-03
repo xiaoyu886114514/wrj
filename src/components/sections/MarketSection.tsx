@@ -63,7 +63,7 @@ export function MarketSection() {
               </div>
               <div className="text-sm text-muted-foreground mt-2">2030年低空物流市场规模预测</div>
               <div className="mt-4 h-1 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-primary/60 rounded-full" style={{ width: '78%' }} />
+                <div className="h-full bg-primary/60 rounded-full transition-all duration-1000 ease-out" style={{ width: `${(marketSize.count / 5000) * 78}%` }} />
               </div>
             </GlassCard>
 
@@ -74,7 +74,7 @@ export function MarketSection() {
               </div>
               <div className="text-sm text-muted-foreground mt-2">年均复合增长率</div>
               <div className="mt-4 h-1 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-primary/60 rounded-full" style={{ width: '60%' }} />
+                <div className="h-full bg-primary/60 rounded-full transition-all duration-1000 ease-out" style={{ width: `${(growthRate.count / 30) * 60}%` }} />
               </div>
             </GlassCard>
 
@@ -85,7 +85,7 @@ export function MarketSection() {
               </div>
               <div className="text-sm text-muted-foreground mt-2">偏远地区物流需求缺口</div>
               <div className="mt-4 h-1 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-accent/60 rounded-full" style={{ width: '85%' }} />
+                <div className="h-full bg-accent/60 rounded-full transition-all duration-1000 ease-out" style={{ width: `${(demandGap.count / 85) * 85}%` }} />
               </div>
             </GlassCard>
           </div>
@@ -142,7 +142,7 @@ export function MarketSection() {
               <AnimatedEntry key={i} delay={i * 100}>
                 <GlassCard className="group h-full">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 transition-colors">
+                    <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 transition-colors">
                       <item.icon className="w-5 h-5 text-accent" />
                     </div>
                     <div>

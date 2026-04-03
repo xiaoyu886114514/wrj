@@ -166,34 +166,38 @@ export function Navbar() {
         </button>
       </nav>
 
-      {mobileOpen && (
-        <div
-          id="mobile-navigation"
-          className="mx-3 mt-3 rounded-3xl border border-primary/16 bg-background/90 px-4 py-4 shadow-[var(--shadow-lg)] backdrop-blur-xl sm:mx-5 lg:hidden"
-        >
-          <div className="mb-3 flex items-center gap-2 rounded-2xl border border-primary/14 bg-primary/6 px-3 py-2 text-[11px] text-muted-foreground">
-            <span className="signal-dot" />
-            <Radar className="h-3.5 w-3.5 text-primary" />
-            <span className="text-[11px] font-medium tracking-[0.12em]">系统在线</span>
-          </div>
-          {NAV_ITEMS.map(item => (
-            <button
-              key={item.href}
-              type="button"
-              aria-pressed={activeSection === item.href}
-              onClick={() => handleClick(item.href)}
-              className={cn(
-                'focus-ring mb-1 block w-full rounded-2xl px-4 py-3 text-left text-sm transition-all duration-300',
-                activeSection === item.href
-                  ? 'bg-primary/12 text-primary'
-                  : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
-              )}
-            >
-              {item.label}
-            </button>
-          ))}
+      <div
+        id="mobile-navigation"
+        className={cn(
+          'mx-3 mt-3 rounded-3xl border border-primary/16 bg-background/90 px-4 shadow-[var(--shadow-lg)] backdrop-blur-xl sm:mx-5 lg:hidden',
+          'transition-all duration-300 ease-out origin-top',
+          mobileOpen
+            ? 'max-h-[600px] py-4 opacity-100 scale-y-100'
+            : 'max-h-0 py-0 opacity-0 scale-y-95 pointer-events-none overflow-hidden border-transparent'
+        )}
+      >
+        <div className="mb-3 flex items-center gap-2 rounded-2xl border border-primary/14 bg-primary/6 px-3 py-2 text-[11px] text-muted-foreground">
+          <span className="signal-dot" />
+          <Radar className="h-3.5 w-3.5 text-primary" />
+          <span className="text-[11px] font-medium tracking-[0.12em]">系统在线</span>
         </div>
-      )}
+        {NAV_ITEMS.map(item => (
+          <button
+            key={item.href}
+            type="button"
+            aria-pressed={activeSection === item.href}
+            onClick={() => handleClick(item.href)}
+            className={cn(
+              'focus-ring mb-1 block w-full rounded-2xl px-4 py-3 text-left text-sm transition-all duration-300',
+              activeSection === item.href
+                ? 'bg-primary/12 text-primary'
+                : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+            )}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
     </header>
   )
 }

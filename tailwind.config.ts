@@ -60,6 +60,8 @@ const config: Config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        icon: "0.75rem",
+        card: "var(--radius)",
       },
       keyframes: {
         "accordion-down": {

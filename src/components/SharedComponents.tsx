@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useInView } from '@/hooks/useAnimations'
 
@@ -143,6 +144,82 @@ export function AnimatedEntry({ children, className, delay = 0 }: AnimatedEntryP
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
+    </div>
+  )
+}
+
+interface TabItem {
+  icon?: LucideIcon
+  label: string
+}
+
+interface TabGroupProps {
+  items: TabItem[]
+  activeIndex: number
+  onChange: (index: number) => void
+  accent?: 'primary' | 'accent'
+  className?: string
+}
+
+export function TabGroup({ items, activeIndex, onChange, accent = 'primary', className }: TabGroupProps) {
+  const isPrimary = accent === 'primary'
+
+  return (
+    <div className={cn('flex flex-wrap gap-3', className)}>
+      {items.map((item, i) => (
+        <button
+          key={i}
+          type="button"
+          onClick={() => onChange(i)}
+          className={cn(
+            'focus-ring flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-medium transition-all duration-300',
+            activeIndex === i
+              ? isPrimary
+                ? 'border border-primary/30 bg-primary/20 text-primary shadow-[var(--shadow-glow-primary)]'
+                : 'border border-accent/30 bg-accent/20 text-accent'
+              : 'border border-border bg-muted/50 text-muted-foreground hover:border-border hover:text-foreground',
+          )}
+        >
+          {item.icon && <item.icon className="h-4 w-4" />}
+          {item.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string
+  htmlId: string
+}
+
+export function FormInput({ label, htmlId, className, ...props }: FormInputProps) {
+  return (
+    <div className={className}>
+      <label htmlFor={htmlId} className="mb-1.5 block text-xs font-medium text-muted-foreground">{label}</label>
+      <input
+        id={htmlId}
+        {...props}
+        className="focus-ring w-full rounded-lg border border-border bg-muted/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 transition-all focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/20"
+      />
+    </div>
+  )
+}
+
+interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label: string
+  htmlId: string
+}
+
+export function FormTextarea({ label, htmlId, className, ...props }: FormTextareaProps) {
+  return (
+    <div className={className}>
+      <label htmlFor={htmlId} className="mb-1.5 block text-xs font-medium text-muted-foreground">{label}</label>
+      <textarea
+        id={htmlId}
+        {...props}
+        className="focus-ring w-full resize-none rounded-lg border border-border bg-muted/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 transition-all focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/20"
+      />
     </div>
   )
 }
